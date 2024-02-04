@@ -21,9 +21,20 @@ function Onboarding1() {
   const navigate = useNavigate();
   const { step, setStep } = React.useContext(AppContext);
 
-  const handleClick = () => {
-    setStep(2);
-  };
+  // const getProvider = () => {
+  //   if ("phantom" in window) {
+  //     const provider = window.phantom?.solana;
+
+  //     if (provider?.isPhantom) {
+  //       return provider;
+  //     }
+  //   }
+
+  //   window.open("https://phantom.app/", "_blank");
+  // };
+
+  // const provider = getProvider();
+  // console.log(provider);
 
   return (
     <Flex>
