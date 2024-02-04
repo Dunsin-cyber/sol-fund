@@ -39,36 +39,6 @@ function Index() {
           <Text>we are at 40 percent</Text>
         </Box>
       </Flex>
-
-      <TableContainer>
-        <Table variant="simple">
-          <TableCaption>Transaction details</TableCaption>
-          <Thead>
-            <Tr>
-              <Th>Date</Th>
-              <Th>Amount</Th>
-              <Th> Address</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            <Tr>
-              <Td>2-23-2034</Td>
-              <Td>$500</Td>
-              <Td>7sa87c8asc87ash8shc8ahs8has8c7</Td>
-            </Tr>
-            <Tr>
-              <Td>$2-23-2034</Td>
-              <Td>$20</Td>
-              <Td>7sa87c8asc87ash8shc8ahs8has8c7</Td>
-            </Tr>
-            <Tr>
-              <Td>yards</Td>
-              <Td>$300</Td>
-              <Td>7sa87c8asc87ash8shc8ahs8has8c7</Td>
-            </Tr>
-          </Tbody>
-        </Table>
-      </TableContainer>
     </Container>
   );
 }

@@ -16,25 +16,14 @@ import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../Context";
 import Onboarding2 from "./Onboarding2";
 import Onboarding3 from "./Onboarding3";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 function Onboarding1() {
   const navigate = useNavigate();
   const { step, setStep } = React.useContext(AppContext);
+  const { connected, select } = useWallet();
 
-  // const getProvider = () => {
-  //   if ("phantom" in window) {
-  //     const provider = window.phantom?.solana;
-
-  //     if (provider?.isPhantom) {
-  //       return provider;
-  //     }
-  //   }
-
-  //   window.open("https://phantom.app/", "_blank");
-  // };
-
-  // const provider = getProvider();
-  // console.log(provider);
+  console.log(connected);
 
   return (
     <Flex>
