@@ -83,7 +83,7 @@ const tagVal = [
 
 function Step1() {
   const { setStep } = React.useContext(AppContext);
-  const [tags, setTags] = React.useState<string[]>([]);
+  const [tags, setTags] = React.useState([]);
 
   const handleClick = () => {
     setStep(2);
