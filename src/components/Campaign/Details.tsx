@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Container,
@@ -17,9 +17,36 @@ import {
   TableCaption,
   TableContainer,
   Button,
+  NumberInput,
+  NumberInputField,
 } from "@chakra-ui/react";
+import { useParams } from "react-router-dom";
+import { AppContext } from "../../Context";
+import Navbar from "../Navbar";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
 function Details() {
+  const { id }: any = useParams();
+  const { getACampaign, recipient, donate, transactionPending } =
+    React.useContext(AppContext);
+
+  const { publicKey } = useWallet();
+
+  const [amount, setAmount] = React.useState<number>(0);
+  useEffect(() => {
+    getACampaign(id);
+  }, []);
+
+  const amountLeft = recipient.amountRequired - recipient.amountDonated;
+  const progress = (recipient.amountDonated / recipient.amountRequired) * 100;
+
+  const parse: any = (val: string) => val.replace(/^\$/, "");
+  const format = (val: number) => `$` + val;
+
+  const handleDonate = async () => {
+    await donate(amount);
+  };
   return (
     <Container
       maxW="60%"
@@ -29,25 +56,51 @@ function Details() {
       py={10}
       px={10}
     >
-      <Heading>SolFunding for Janet</Heading>
-      <Text>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. At nulla a
-        cupiditate nam odit pariatur debitis libero expedita facere laborum!
-      </Text>
-      <Box mt={"40px"}>
-        <Progress value={80} />
-        <Flex justify={"flex-end"}>
-          <Text mt={4}>$300 to reach goal🎉</Text>
+      {!publicKey ? (
+        <Flex align="center" justify="center" flexDirection="column">
+          <Text fontSize={"24px"}>
+            Please connect a wallet to see full details and donate
+          </Text>
+          <WalletMultiButton />
         </Flex>
-        <Flex justify={"center"}>
-          <Button py={7} px={5}>
-            Send Janet some Sol
-          </Button>
-        </Flex>
-      </Box>
-      {/* transaction */}
-      <Box h={"100px"} />
-      <Transactions />
+      ) : (
+        <>
+          <Navbar />
+          <Heading>SolFunding for {recipient.name}</Heading>
+          <Text>{recipient.description}</Text>
+          <Box mt={"40px"}>
+            <Progress value={progress} />
+            <Flex justify={"flex-end"}>
+              <Text mt={4}>
+                $ {amountLeft.toLocaleString()} to reach goal🎉
+              </Text>
+            </Flex>
+            <Flex justify={"center"} gap={3} flexDirection={"column"}>
+              <NumberInput
+                value={format(amount)}
+                onChange={(value: string) => setAmount(parse(value))}
+                defaultValue={0}
+                clampValueOnBlur={false}
+                h={"40px"}
+              >
+                <NumberInputField />
+              </NumberInput>
+              <Button
+                py={7}
+                px={5}
+                onClick={handleDonate}
+                isDisabled={amount < 0.1 || transactionPending}
+                isLoading={transactionPending}
+              >
+                Send {recipient.name} some Sol
+              </Button>
+            </Flex>
+          </Box>
+          {/* transaction */}
+          <Box h={"100px"} />
+          <Transactions />
+        </>
+      )}
     </Container>
   );
 }
@@ -78,7 +131,7 @@ function Transactions() {
             <Td>7sa87c8asc87ash8shc8ahs8has8c7</Td>
           </Tr>
           <Tr>
-            <Td>yards</Td>
+            <Td>2-23-2034</Td>
             <Td>$300</Td>
             <Td>7sa87c8asc87ash8shc8ahs8has8c7</Td>
           </Tr>
@@ -97,16 +150,6 @@ function Transactions() {
             <Td>$500</Td>
             <Td>7sa87c8asc87ash8shc8ahs8has8c7</Td>
           </Tr>{" "}
-          <Tr>
-            <Td>2-23-2034</Td>
-            <Td>$500</Td>
-            <Td>7sa87c8asc87ash8shc8ahs8has8c7</Td>
-          </Tr>{" "}
-          <Tr>
-            <Td>2-23-2034</Td>
-            <Td>$500</Td>
-            <Td>7sa87c8asc87ash8shc8ahs8has8c7</Td>
-          </Tr>
         </Tbody>
       </Table>
     </TableContainer>

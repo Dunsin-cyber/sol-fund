@@ -21,11 +21,14 @@ import {
 } from "@chakra-ui/react";
 import { AppContext } from "../../Context";
 import { useLocation } from "react-router-dom";
+import Navbar from "../Navbar";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 function Index() {
   const { user } = React.useContext(AppContext);
   const location = useLocation();
-  const fullUrl = window.location.href;
+  const { publicKey } = useWallet();
+  const fullUrl = window.location.origin + "/details/" + publicKey?.toString();
 
   const percentDonated = (user?.amountDonated / user?.amountRequired) * 100;
   return (
@@ -37,6 +40,7 @@ function Index() {
       py={10}
       px={10}
     >
+      <Navbar />
       <Heading>Profile</Heading>
       <Flex justify={"space-evenly"} align={"center"}>
         <CircularProgress
@@ -45,7 +49,9 @@ function Index() {
           size="250px"
           thickness="4px"
         >
-          <CircularProgressLabel>{percentDonated}%</CircularProgressLabel>
+          <CircularProgressLabel>
+            {Math.floor(percentDonated)}%
+          </CircularProgressLabel>
         </CircularProgress>
         {/* <Text>we are at 40 percent</Text> */}
         {/* side details */}
@@ -72,11 +78,11 @@ function Index() {
       </Flex>
       <Center>
         <Flex mt={10} gap={3} justify={"center"} align={"center"}>
-          <Heading>Copy Donation Link</Heading>
+          <Text fontSize={"24px"}>Donation Link</Text>
           <Link>
-            <Heading fontStyle={"italic"} color="green">
+            <Text fontStyle={"italic"} color="primary.100">
               {fullUrl}
-            </Heading>
+            </Text>
           </Link>
         </Flex>
       </Center>

@@ -12,36 +12,38 @@ import Campaign from "./components/Campaign";
 import Details from "./components/Campaign/Details";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "./Context";
 
 const App = () => {
-  const { publicKey } = useWallet();
-  const navigate = useNavigate();
-  React.useEffect(() => {
-    if (!publicKey) {
-      navigate("/");
-    }
-  }, []);
-  if (publicKey) {
-    return (
-      <React.Fragment>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="onboarding" element={<Onboarding1 />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="campaign" element={<Campaign />} />
-          <Route path="details" element={<Details />} />
-        </Routes>
-      </React.Fragment>
-    );
-  } else {
-    return (
-      <React.Fragment>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-        </Routes>
-      </React.Fragment>
-    );
-  }
+  // const { initialized } = React.useContext(AppContext);
+  // const navigate = useNavigate();
+  // React.useEffect(() => {
+  //   if (!publicKey) {
+  //     navigate("/");
+  //   }
+  // }, []);
+
+  // if (initialized) {
+  return (
+    <React.Fragment>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="onboarding" element={<Onboarding1 />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="campaign" element={<Campaign />} />
+        <Route path="details/:id" element={<Details />} />
+      </Routes>
+    </React.Fragment>
+  );
+  // } else {
+  //   return (
+  //     <React.Fragment>
+  //       <Routes>
+  //         <Route path="/" element={<LandingPage />} />
+  //       </Routes>
+  //     </React.Fragment>
+  //   );
+  // }
 };
 
 export default App;

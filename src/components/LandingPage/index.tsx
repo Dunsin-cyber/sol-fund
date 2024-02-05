@@ -18,38 +18,29 @@ import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
 function LandingPage() {
   const navigate = useNavigate();
-  const { getUser,user, transactionPending } = React.useContext(AppContext);
   const { publicKey } = useWallet();
 
-  // useGetUser()
-
   const handleClick = async () => {
-   await getUser()
-    if(user && !transactionPending) {
-      navigate("profile");
-      toast.success("welcome back")
+    navigate("profile");
+  };
 
-    } else if (!user && transactionPending) {
-      // else, go to onboaring
-      toast.success("welcoome, create an account")
-      navigate("onboarding");
-
-    }
-    }
-  
   return (
     <Box>
       <Box>
         <Flex zIndex={3}>
           <Text ml={6} my={3} fontSize="30px">
-            SolFunding
+            SolFund
           </Text>
         </Flex>
         <Container>
           <Center flexDirection="column" mt={"40vh"}>
             <Text fontSize="60px">Get Help</Text>
             <Flex mt={5}>
-              <WalletMultiButton/>
+              {publicKey ? (
+                <Button onClick={handleClick}>Go to Profile</Button>
+              ) : (
+                <WalletMultiButton />
+              )}
             </Flex>
           </Center>
         </Container>

@@ -11,6 +11,8 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { AppContext } from "../../Context";
+import { Link } from "react-router-dom";
+import Navbar from "../Navbar";
 
 function Index() {
   const { campaigns, getAllCampaigns } = React.useContext(AppContext);
@@ -19,7 +21,8 @@ function Index() {
     getAllCampaigns();
   }, []);
   return (
-    <Container maxW="70%">
+    <Container maxW="60%" mt={10} border={"1px solid white"} py={10} px={10}>
+      <Navbar />
       <Box my={5}>
         <Heading>Campaigns</Heading>
         <Text py={4} fontSize={"24px"}>
@@ -29,7 +32,11 @@ function Index() {
       </Box>
       <Grid templateColumns="repeat(3, 1fr)" gap={6}>
         {campaigns.map((camp) => (
-          <Box key={camp[0].id}>
+          <Link
+            style={{ textDecoration: "none" }}
+            key={camp[0].pubKey}
+            to={`/details/${camp[0].pubKey}`}
+          >
             <Card
               id={camp[0].pubKey}
               amountDonated={camp[0].amountDonated}
@@ -37,7 +44,7 @@ function Index() {
               name={camp[0].name}
               description={camp[0].description}
             />
-          </Box>
+          </Link>
         ))}
       </Grid>
     </Container>
