@@ -4,10 +4,13 @@ import App from "./App";
 import { ChakraProvider } from "@chakra-ui/react";
 import WalletConnetProvider from "./WalletProvider";
 import AppProvider from "./Context";
+// import { Provider } from "react-redux";
+// import {store} from "./redux-toolkit/store";
 import theme from "./theme";
 import "@fontsource/montserrat"; // Defaults to weight 400
 import "@fontsource/montserrat/400.css"; // Specify weight
 import "@fontsource/montserrat/400-italic.css"; // Specify weight and style
+import { Toaster } from "react-hot-toast";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -16,11 +19,14 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <WalletConnetProvider>
+        {/* <Provider store={store}> */}
       <AppProvider>
-        <ChakraProvider theme={theme}>
-          <App />
-        </ChakraProvider>
+          <Toaster />
+          <ChakraProvider theme={theme}>
+            <App />
+          </ChakraProvider>
       </AppProvider>
+        {/* </Provider> */}
     </WalletConnetProvider>
   </React.StrictMode>
 );

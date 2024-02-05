@@ -12,24 +12,30 @@ import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../Context";
 import { WalletNotConnectedError } from "@solana/wallet-adapter-base";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { useGetUser } from "../functions";
+import toast from "react-hot-toast";
 
 function LandingPage() {
   const navigate = useNavigate();
-  const { step } = React.useContext(AppContext);
+  const { getUser,user, transactionPending } = React.useContext(AppContext);
   const { publicKey } = useWallet();
 
-  const handleClick = () => {
-    if (!publicKey) throw new WalletNotConnectedError();
-    const user = 1;
-    //check if user exists
-    if (user) {
-      // if user exits, go to profile page,
+  // useGetUser()
+
+  const handleClick = async () => {
+    getUser()
+    if(user && !transactionPending) {
       navigate("profile");
-    } else {
+      toast.success("welcome back")
+
+    } else if (!user && !transactionPending) {
       // else, go to onboaring
+      toast.success("welcoome, create an account")
       navigate("onboarding");
+
     }
-  };
+    }
+  
   return (
     <Box>
       <Box>
@@ -42,7 +48,7 @@ function LandingPage() {
           <Center flexDirection="column" mt={"40vh"}>
             <Text fontSize="60px">Get Help</Text>
             <Flex mt={5}>
-              <Button onClick={handleClick}>Start a SolFunding</Button>
+              <Button isLoading={transactionPending} onClick={handleClick}>Start a SolFunding</Button>
             </Flex>
           </Center>
         </Container>
