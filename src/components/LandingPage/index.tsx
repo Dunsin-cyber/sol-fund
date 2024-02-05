@@ -14,6 +14,7 @@ import { WalletNotConnectedError } from "@solana/wallet-adapter-base";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useGetUser } from "../functions";
 import toast from "react-hot-toast";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
 function LandingPage() {
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ function LandingPage() {
           <Center flexDirection="column" mt={"40vh"}>
             <Text fontSize="60px">Get Help</Text>
             <Flex mt={5}>
-              <Button isLoading={transactionPending} onClick={handleClick}>Start a SolFunding</Button>
+              <WalletMultiButton/>
             </Flex>
           </Center>
         </Container>

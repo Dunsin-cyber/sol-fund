@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import { ChakraProvider } from "@chakra-ui/react";
 import WalletConnetProvider from "./WalletProvider";
+import { BrowserRouter as Router } from "react-router-dom";
 import AppProvider from "./Context";
 // import { Provider } from "react-redux";
 // import {store} from "./redux-toolkit/store";
@@ -18,15 +19,17 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <WalletConnetProvider>
+    <Router>
+      <WalletConnetProvider>
         {/* <Provider store={store}> */}
-      <AppProvider>
+        <AppProvider>
           <Toaster />
           <ChakraProvider theme={theme}>
             <App />
           </ChakraProvider>
-      </AppProvider>
+        </AppProvider>
         {/* </Provider> */}
-    </WalletConnetProvider>
+      </WalletConnetProvider>
+    </Router>
   </React.StrictMode>
 );

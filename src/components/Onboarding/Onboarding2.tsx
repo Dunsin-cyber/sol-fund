@@ -7,11 +7,16 @@ import {
   Flex,
   InputGroup,
   InputLeftElement,
+  NumberInput,
+  NumberInputField,
 } from "@chakra-ui/react";
 import { AppContext } from "../../Context";
 
 function Onboarding2() {
-  const { setStep } = React.useContext(AppContext);
+  const { setStep, amount, setAmount } = React.useContext(AppContext);
+  console.log(amount);
+  const parse = (val: string) => val.replace(/^\$/, "");
+  const format = (val: number) => `$` + val;
   return (
     <Box>
       <Box>
@@ -34,7 +39,14 @@ function Onboarding2() {
           >
             $
           </InputLeftElement>
-          <Input placeholder="Enter amount" />
+          <NumberInput
+            value={format(amount)}
+            onChange={(value: string) => setAmount(parse(value))}
+            defaultValue={0}
+            clampValueOnBlur={false}
+          >
+            <NumberInputField />
+          </NumberInput>
         </InputGroup>
         <Input placeholder="equivalen solana presently" size="lg" />
       </Flex>
@@ -49,6 +61,7 @@ function Onboarding2() {
           onClick={() => {
             setStep(3);
           }}
+          isDisabled={amount < 1}
         >
           Next Step
         </Button>

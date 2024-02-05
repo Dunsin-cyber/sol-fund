@@ -7,35 +7,27 @@ import {
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import { PhantomWalletAdapter } from "@solana/wallet-adapter-wallets";
 import { clusterApiUrl } from "@solana/web3.js";
+require("@solana/wallet-adapter-react-ui/styles.css");
+
+
 
 const WalletConnetProvider = ({ children }: any) => {
-  // const network = WalletAdapterNetwork.Devnet;
-  // const endpoint = useMemo(() => {
-  //   if (network === WalletAdapterNetwork.Devnet) {
-  //     return "https://holy-indulgent-rain.solana-devnet.quiknode.pro/48da34f302f5276f48b3e6c9b5ff5296442ed154/";
-  //   }
-  //   return clusterApiUrl(network);
-  // }, [network]);
-
-  // const wallets = useMemo(() => [new PhantomWalletAdapter()], []);
-  // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
   const network = WalletAdapterNetwork.Devnet;
+  const endpoint = useMemo(() => {
+    if (network === WalletAdapterNetwork.Devnet) {
+      return "https://virulent-ultra-replica.solana-devnet.quiknode.pro/8d0f174b8b11b55aee43b27a6f913fff39963312/";
+    }
+    return clusterApiUrl(network);
+  }, [network]);
 
-  // You can also provide a custom RPC endpoint.
-  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
-
-  const wallets = useMemo(
-    () => [
-      new PhantomWalletAdapter(),
-    ],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [network]
-  );
+  const wallets = useMemo(() => [new PhantomWalletAdapter()], []);
 
   return (
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
+        <WalletModalProvider>
         {children}
+        </WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>
   );

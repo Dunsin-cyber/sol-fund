@@ -22,10 +22,6 @@ function Onboarding1() {
   const navigate = useNavigate();
   const { step, setStep } = React.useContext(AppContext);
 
-
-
-  
-
   return (
     <Flex>
       {/* Left */}
@@ -83,9 +79,9 @@ const tagVal = [
 ];
 
 function Step1() {
-  const { setStep , tags, setTags} = React.useContext(AppContext);
-const {publicKey} = useWallet()
-console.log(publicKey?.toString())
+  const { setStep, tags, setTags } = React.useContext(AppContext);
+  const { publicKey } = useWallet();
+  console.log(tags);
 
   const handleClick = () => {
     setStep(2);
@@ -109,11 +105,11 @@ console.log(publicKey?.toString())
           <option value="Jupiter">Jupiter</option>
           <option value="woof">Woof</option>
         </Select>
-        <Input  placeholder={publicKey?.toString()} isDisabled={true} size="lg" />
+        <Input value={publicKey?.toString()} isReadOnly size="lg" />
       </Flex>
       {/* funding sector */}
       <Grid pt={8} templateColumns="repeat(9, 1fr)" gap={6}>
-        {tags.map((tag:any) => (
+        {tags.map((tag: any) => (
           <Tag
             cursor="pointer"
             py={4}
@@ -154,6 +150,7 @@ console.log(publicKey?.toString())
           color="white"
           bgColor="primary.50"
           onClick={handleClick}
+          isDisabled={tags.length < 2}
         >
           Next Step
         </Button>

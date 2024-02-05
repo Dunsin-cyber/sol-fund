@@ -10,8 +10,14 @@ import {
   Grid,
   Heading,
 } from "@chakra-ui/react";
+import { AppContext } from "../../Context";
 
-function index() {
+function Index() {
+  const { campaigns, getAllCampaigns } = React.useContext(AppContext);
+  console.log(campaigns);
+  React.useEffect(() => {
+    getAllCampaigns();
+  }, []);
   return (
     <Container maxW="70%">
       <Box my={5}>
@@ -22,39 +28,55 @@ function index() {
         </Text>
       </Box>
       <Grid templateColumns="repeat(3, 1fr)" gap={6}>
-        <Card />
-        <Card /> <Card /> <Card /> <Card /> <Card /> <Card /> <Card />
+        {campaigns.map((camp) => (
+          <Box key={camp[0].id}>
+            <Card
+              id={camp[0].pubKey}
+              amountDonated={camp[0].amountDonated}
+              amountRequired={camp[0].amountRequired}
+              name={camp[0].name}
+              description={camp[0].description}
+            />
+          </Box>
+        ))}
       </Grid>
     </Container>
   );
 }
 
-export default index;
+export default Index;
 
-function Card() {
+type CardT = {
+  id: string;
+  name: string;
+  description: string;
+  amountRequired: number;
+  amountDonated: number;
+};
+
+function Card({ id, name, description, amountDonated, amountRequired }: CardT) {
   return (
     <Center>
       <Box p="5" maxW="320px" borderWidth="1px" cursor="pointer">
-        <Image borderRadius="md" src="https://bit.ly/2k1H1t6" />
+        <Image borderRadius="md" src="coin.jpg" />
         <Flex align="baseline" mt={2}>
-          <Badge colorScheme="pink">verified</Badge>
+          <Badge colorScheme="pink">New</Badge>
           <Text
             ml={2}
             textTransform="uppercase"
             fontSize="sm"
             fontWeight="bold"
-            color="pink.800"
           >
-            Verified &bull; Cape Town
+            {name}
           </Text>
         </Flex>
         <Text mt={2} fontSize="xl" fontWeight="semibold" lineHeight="short">
-          Modern, Chic Penthouse with Mountain, City & Sea Views
+          {description}
         </Text>
-        <Text mt={2}>$119/night</Text>
+        <Text mt={2}>${amountRequired}</Text>
         <Flex mt={2} align="center">
           <Text ml={1} fontSize="sm">
-            <b>4.84</b> (190)
+            <b>{amountRequired}</b>({amountDonated})
           </Text>
         </Flex>
       </Box>

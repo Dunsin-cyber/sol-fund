@@ -9,8 +9,25 @@ import { PublicKey, SystemProgram } from "@solana/web3.js";
 import idl from "../idl.json";
 import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
 import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const PROGRAM_KEY = new PublicKey(idl.metadata.address);
+
+type bioT = {
+  name: string;
+  description: string;
+};
+
+type campaignT = {
+  pubKey: string;
+  name: string;
+  amountDonated: number;
+  amountRequired: number;
+  description: string;
+  donationComplete: boolean;
+  id: number;
+};
 
 export const AppContext = React.createContext<{
   step: number;
@@ -21,9 +38,15 @@ export const AppContext = React.createContext<{
   getUser: any;
   tags: any;
   setTags: any;
-  bio: any;
+  bio: bioT;
   setBio: any;
-  initialized:any
+  initialized: any;
+  amount: number;
+  setAmount: any;
+  initUser: any;
+  getAllCampaigns: any;
+  campaigns: [campaignT][];
+  setCampaigns: any;
 }>({
   step: 1,
   setStep: undefined,
@@ -33,9 +56,15 @@ export const AppContext = React.createContext<{
   getUser: undefined,
   tags: undefined,
   setTags: undefined,
-  bio: undefined,
+  bio: { name: "", description: "" },
   setBio: undefined,
-  initialized:undefined
+  initialized: undefined,
+  amount: 0,
+  setAmount: undefined,
+  initUser: undefined,
+  getAllCampaigns: undefined,
+  campaigns: [],
+  setCampaigns: undefined,
 });
 
 export const AppProvider = ({ children }: any) => {
@@ -47,14 +76,21 @@ export const AppProvider = ({ children }: any) => {
     name: "",
     description: "",
   });
-  const [amount, setAmount] = React.useState(0);
+  const [amount, setAmount] = React.useState<number>(0);
   const anchorWallet = useAnchorWallet();
   const { connection } = useConnection();
-  const [user, setUser] = React.useState(false);
+  const [user, setUser] = React.useState({
+    name: "",
+    amountDonated: 0,
+    amountRequired: 0,
+    description: "",
+    donationComplete: false,
+  });
+  const [campaigns, setCampaigns] = React.useState<[campaignT][]>([]);
   const { publicKey } = useWallet();
-console.log(publicKey)
+  const navigate = useNavigate();
+
   const smartContract = React.useMemo(() => {
-    console.log("i ran")
     if (anchorWallet && publicKey) {
       const provider = new anchor.AnchorProvider(
         connection,
@@ -68,27 +104,108 @@ console.log(publicKey)
   const getUser = async () => {
     setTransactionPending(true);
     try {
-      console.log("starter")
       if (smartContract && publicKey) {
         const [CampaignPda] = findProgramAddressSync(
           [utf8.encode("COMPAIGN_DEMO"), publicKey.toBuffer()],
           smartContract.programId
         );
 
-        const data = await smartContract.account.campaign.fetch(CampaignPda);
+        const data: any = await smartContract.account.campaign.fetch(
+          CampaignPda
+        );
 
         if (data) {
-          setUser(true);
+          setUser({
+            ...user,
+            name: data.name,
+            amountDonated: data.amountDonated.toNumber(),
+            amountRequired: data.amountRequired.toNumber(),
+            description: data.description,
+            donationComplete: data.donationComplete,
+          });
+          console.log("saved user", user);
+          navigate("campaign");
         }
         setTransactionPending(false);
         return;
       }
-    } catch (err) {
-      console.log("error bloock")
-      console.log(err);
-    
+    } catch (err: any) {
+      if (err.message.includes("Account does not exist or has no data")) {
+        toast.success("Welcome, create an Account");
+        navigate("onboarding");
+        return;
+      }
+      toast.success(err.message);
+
+      console.log(err.message);
     }
   };
+
+  const initUser = async () => {
+    setTransactionPending(true);
+    try {
+      if (smartContract && publicKey) {
+        const [CampaignPda] = findProgramAddressSync(
+          [utf8.encode("COMPAIGN_DEMO"), publicKey.toBuffer()],
+          smartContract.programId
+        );
+
+        await smartContract.methods
+          .create(
+            bio.name,
+            new anchor.BN(12),
+            new anchor.BN(amount),
+            tags,
+            bio.description
+          )
+          .accounts({
+            campaign: CampaignPda,
+            user: publicKey,
+            systemProgram: SystemProgram.programId,
+          })
+          .rpc();
+        navigate("/profile");
+      }
+    } catch (err: any) {
+      toast.success(err.message);
+
+      console.log(err);
+    } finally {
+      setTransactionPending(false);
+    }
+  };
+
+  const getAllCampaigns = async () => {
+    try {
+      if (smartContract && publicKey) {
+        setTransactionPending(true);
+        const data = await smartContract.account.campaign.all();
+        if (data) {
+          data.forEach((d: any) => {
+            var res = {
+              pubKey: d.publicKey.toString(),
+              name: d.account.name,
+              amountDonated: d.account.amountDonated.toNumber(),
+              amountRequired: d.account.amountRequired.toNumber(),
+              description: d.account.description,
+              donationComplete: d.account.donationComplete,
+              id: d.account.id,
+            };
+            campaigns.push([res]);
+          });
+        }
+      }
+    } catch (err: any) {
+      toast.success(err.message);
+      console.log(err);
+    } finally {
+      setTransactionPending(false);
+    }
+  };
+
+  React.useEffect(() => {
+    getUser();
+  }, [publicKey]);
 
   // React.useEffect(() => {
   //   const start = async () => {
@@ -128,7 +245,13 @@ console.log(publicKey)
         setTags,
         bio,
         setBio,
-        initialized
+        initialized,
+        amount,
+        setAmount,
+        initUser,
+        getAllCampaigns,
+        campaigns,
+        setCampaigns,
       }}
     >
       {children}

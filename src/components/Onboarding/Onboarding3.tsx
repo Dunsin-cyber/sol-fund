@@ -10,9 +10,16 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../../Context";
 
 function Onboarding3() {
+  const { bio, setBio , initUser} = React.useContext(AppContext);
   const navigate = useNavigate();
+
+  const handleCreateUser = () => {
+    initUser()
+  
+  };
   return (
     <Box>
       <Box>
@@ -28,9 +35,28 @@ function Onboarding3() {
       {/* pick funding type */}
       <Flex flexDirection="column" gap={3} pt={4} w={"50%"}>
         <Text my={3}>Name</Text>
-        <Input name="name" placeholder="what is your name" />
+        <Input
+          value={bio.name}
+          onChange={(e) =>
+            setBio({
+              ...bio,
+              name: e.target.value,
+            })
+          }
+          name="name"
+          placeholder="what is your name"
+        />
         <Text my={3}>Description</Text>
-        <Textarea placeholder="write a short reason for your solana funding" />
+        <Textarea
+          value={bio.description}
+          onChange={(e) =>
+            setBio({
+              ...bio,
+              description: e.target.value,
+            })
+          }
+          placeholder="write a short reason for your solana funding"
+        />
       </Flex>
 
       <Flex justify="flex-end" mt={8}>
@@ -39,9 +65,8 @@ function Onboarding3() {
           px={5}
           color="white"
           bgColor="primary.50"
-          onClick={() => {
-            navigate("/profile");
-          }}
+          onClick={handleCreateUser}
+          isDisabled={bio.name.length < 3 && bio.description.length < 3}
         >
           Create
         </Button>
