@@ -23,12 +23,12 @@ function LandingPage() {
   // useGetUser()
 
   const handleClick = async () => {
-    getUser()
+   await getUser()
     if(user && !transactionPending) {
       navigate("profile");
       toast.success("welcome back")
 
-    } else if (!user && !transactionPending) {
+    } else if (!user && transactionPending) {
       // else, go to onboaring
       toast.success("welcoome, create an account")
       navigate("onboarding");

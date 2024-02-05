@@ -21,9 +21,10 @@ import { useWallet } from "@solana/wallet-adapter-react";
 function Onboarding1() {
   const navigate = useNavigate();
   const { step, setStep } = React.useContext(AppContext);
-  const { connected, select } = useWallet();
 
-  console.log(connected);
+
+
+  
 
   return (
     <Flex>
@@ -82,8 +83,9 @@ const tagVal = [
 ];
 
 function Step1() {
-  const { setStep } = React.useContext(AppContext);
-  const [tags, setTags] = React.useState<string[]>([]);
+  const { setStep , tags, setTags} = React.useContext(AppContext);
+const {publicKey} = useWallet()
+console.log(publicKey?.toString())
 
   const handleClick = () => {
     setStep(2);
@@ -107,11 +109,11 @@ function Step1() {
           <option value="Jupiter">Jupiter</option>
           <option value="woof">Woof</option>
         </Select>
-        <Input placeholder="wallet Address" size="lg" />
+        <Input  placeholder={publicKey?.toString()} isDisabled={true} size="lg" />
       </Flex>
       {/* funding sector */}
       <Grid pt={8} templateColumns="repeat(9, 1fr)" gap={6}>
-        {tags.map((tag) => (
+        {tags.map((tag:any) => (
           <Tag
             cursor="pointer"
             py={4}

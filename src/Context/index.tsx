@@ -18,26 +18,43 @@ export const AppContext = React.createContext<{
   smartContract: any;
   user: any;
   transactionPending: any;
-  getUser:any
+  getUser: any;
+  tags: any;
+  setTags: any;
+  bio: any;
+  setBio: any;
+  initialized:any
 }>({
   step: 1,
   setStep: undefined,
   smartContract: undefined,
   user: undefined,
   transactionPending: undefined,
-  getUser:undefined
+  getUser: undefined,
+  tags: undefined,
+  setTags: undefined,
+  bio: undefined,
+  setBio: undefined,
+  initialized:undefined
 });
 
 export const AppProvider = ({ children }: any) => {
   const [step, setStep] = React.useState<number>(1);
   const [transactionPending, setTransactionPending] = React.useState(false);
   const [initialized, setInitialized] = React.useState(false);
+  const [tags, setTags] = React.useState<string[]>([]);
+  const [bio, setBio] = React.useState({
+    name: "",
+    description: "",
+  });
+  const [amount, setAmount] = React.useState(0);
   const anchorWallet = useAnchorWallet();
   const { connection } = useConnection();
   const [user, setUser] = React.useState(false);
   const { publicKey } = useWallet();
-
+console.log(publicKey)
   const smartContract = React.useMemo(() => {
+    console.log("i ran")
     if (anchorWallet && publicKey) {
       const provider = new anchor.AnchorProvider(
         connection,
@@ -51,22 +68,25 @@ export const AppProvider = ({ children }: any) => {
   const getUser = async () => {
     setTransactionPending(true);
     try {
+      console.log("starter")
       if (smartContract && publicKey) {
         const [CampaignPda] = findProgramAddressSync(
           [utf8.encode("COMPAIGN_DEMO"), publicKey.toBuffer()],
           smartContract.programId
         );
+
         const data = await smartContract.account.campaign.fetch(CampaignPda);
-        console.log("user", data);
+
         if (data) {
-          setUser(true)
+          setUser(true);
         }
         setTransactionPending(false);
-        // setUser(data)
+        return;
       }
     } catch (err) {
+      console.log("error bloock")
       console.log(err);
-      setTransactionPending(false);
+    
     }
   };
 
@@ -97,7 +117,19 @@ export const AppProvider = ({ children }: any) => {
 
   return (
     <AppContext.Provider
-      value={{ user, transactionPending, step, setStep, smartContract, getUser }}
+      value={{
+        user,
+        transactionPending,
+        step,
+        setStep,
+        smartContract,
+        getUser,
+        tags,
+        setTags,
+        bio,
+        setBio,
+        initialized
+      }}
     >
       {children}
     </AppContext.Provider>
