@@ -1,6 +1,7 @@
 # SolFund: Decentralized Crowdfunding on Solana
 
 - [Solfund Playground Smartcontract](https://beta.solpg.io/65bfa3c1cffcf4b13384cf46)
+- [Solscan of the contract](https://solscan.io/tx/5UTQTiDLXNB49ggVM47x9gm2xMBUEuxJXFMPN1os8HU4vtvqe2VNES3mqizPc3yNpWsGqmMctWqwBgXSQhWMrdo9?cluster=devnet)
 
 ## Table of Contents
 
