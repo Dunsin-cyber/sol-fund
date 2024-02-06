@@ -23,7 +23,7 @@ import {
 import { useParams } from "react-router-dom";
 import { AppContext } from "../../Context";
 import Navbar from "../Navbar";
-import { useWallet } from "@solana/wallet-adapter-react";
+import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
 function Details() {
@@ -35,8 +35,13 @@ function Details() {
 
   const [amount, setAmount] = React.useState<number>(0);
   useEffect(() => {
-    getACampaign(id);
-  }, []);
+    const call = async () => {
+      if (id) {
+        await getACampaign(id);
+      }
+    };
+    call();
+  }, [publicKey, id]);
 
   const amountLeft = recipient.amountRequired - recipient.amountDonated;
   const progress = (recipient.amountDonated / recipient.amountRequired) * 100;

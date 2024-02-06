@@ -116,7 +116,7 @@ export const AppProvider = ({ children }: any) => {
     amountDonated: 0,
     amountRequired: 0,
   });
-  console.log(" publickey type", publicKey);
+  // console.log("publickey type", publicKey);
 
   const smartContract = React.useMemo(() => {
     if (anchorWallet && publicKey) {
@@ -238,10 +238,14 @@ export const AppProvider = ({ children }: any) => {
       if (smartContract && publicKey) {
         const campaign = await smartContract.account.campaign.all();
         if (campaign) {
-          const val: any = campaign.find((d) => {
-            return d.publicKey.toString() === pub;
-          });
-          if (val) {
+          // console.log(campaign)
+          // const val: any = campaign.find((d) => {
+          //   return d.publicKey.toString() === pub;
+          // });
+          campaign.map((val:any) => {
+
+            if (val.publicKey.toString() == pub) {
+              console.log("val",val)
             setRecipient({
               ...recipient,
               publicKey: val.publicKey,
@@ -251,6 +255,7 @@ export const AppProvider = ({ children }: any) => {
               amountRequired: val.account.amountRequired.toNumber(),
             });
           }
+        })
         }
       }
     } catch (err: any) {
