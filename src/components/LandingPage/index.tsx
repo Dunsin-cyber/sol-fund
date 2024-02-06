@@ -33,7 +33,7 @@ function LandingPage() {
           </Text>
         </Flex>
         <Container>
-          <Center flexDirection="column" mt={"40vh"}>
+          <Center flexDirection="column" mt={"30vh"}>
             <Text textAlign={"center"} fontSize="60px">Easily raise funds with sol and other assets</Text>
             <Flex mt={5}>
               {publicKey ? (
