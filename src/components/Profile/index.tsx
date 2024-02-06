@@ -80,7 +80,7 @@ function Index() {
         <Flex mt={10} gap={3} justify={"center"} align={"center"}>
           <Text fontSize={"24px"}>Donation Link</Text>
           <Link>
-            <Text fontStyle={"italic"} color="primary.100">
+            <Text fontStyle={"italic"} color="primary.50">
               {fullUrl}
             </Text>
           </Link>

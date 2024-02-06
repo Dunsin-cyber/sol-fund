@@ -16,20 +16,20 @@ const theme = extendTheme({
   styles: {
     global: {
       body: {
-        bg: "#341A41",
-        color: "white",
+        bg: "#EBD3F7",
+        color: "black",
       },
     },
   },
   components: {
     Button: {
       baseStyle: {
-        bg: "white",
-        color: `#341A41`,
+        bg: "#341A41",
+        color: `white`,
         border: `1px white solid`,
         _hover: {
           backgroundColor: "transparent",
-          color: "white",
+          color: "#341A41",
         },
       },
     },

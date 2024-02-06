@@ -31,6 +31,8 @@ function Onboarding1() {
         pt="40vh"
         px="34px"
         w={"30%"}
+        bgColor="primary.50"
+        color="white"
       >
         <Text fontSize="36px" fontWeight={700}>
           Let's begin your fundraising journey

@@ -208,7 +208,7 @@ export const AppProvider = ({ children }: any) => {
         setTransactionPending(true);
         // campaigns.length = 0;
         const data = await smartContract.account.campaign.all();
-        campaigns.map((d) => d.pop());
+        // campaigns.map((d) => d.pop());
         if (data) {
           data.forEach((d: any) => {
             var res = {

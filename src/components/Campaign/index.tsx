@@ -17,7 +17,7 @@ import Navbar from "../Navbar";
 function Index() {
   const { campaigns, getAllCampaigns } = React.useContext(AppContext);
   console.log(campaigns);
-  React.useEffect(() => {
+  React.useMemo(() => {
     getAllCampaigns();
   }, []);
   return (
@@ -31,7 +31,7 @@ function Index() {
         </Text>
       </Box>
       <Grid templateColumns="repeat(3, 1fr)" gap={6}>
-        {campaigns.map((camp) => (
+        {campaigns?.map((camp) => (
           <Link
             style={{ textDecoration: "none" }}
             key={camp[0].pubKey}
