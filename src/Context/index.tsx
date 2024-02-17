@@ -10,7 +10,7 @@ import idl from "../idl.json";
 import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
 import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const PROGRAM_KEY = new PublicKey(idl.metadata.address);
 
@@ -109,6 +109,7 @@ export const AppProvider = ({ children }: any) => {
   const [campaigns, setCampaigns] = React.useState<[campaignT][]>([]);
   const { publicKey } = useWallet();
   const navigate = useNavigate();
+  const location = useLocation();
   const [recipient, setRecipient] = React.useState({
     publicKey: publicKey,
     name: "",
@@ -154,6 +155,7 @@ export const AppProvider = ({ children }: any) => {
         }
         setInitialized(true);
         setTransactionPending(false);
+        navigate(location.state);
         return;
       }
     } catch (err: any) {
@@ -242,20 +244,19 @@ export const AppProvider = ({ children }: any) => {
           // const val: any = campaign.find((d) => {
           //   return d.publicKey.toString() === pub;
           // });
-          campaign.map((val:any) => {
-
+          campaign.map((val: any) => {
             if (val.publicKey.toString() == pub) {
-              console.log("val",val)
-            setRecipient({
-              ...recipient,
-              publicKey: val.publicKey,
-              name: val.account.name,
-              description: val.account.description,
-              amountDonated: val.account.amountDonated.toNumber(),
-              amountRequired: val.account.amountRequired.toNumber(),
-            });
-          }
-        })
+              console.log("val", val);
+              setRecipient({
+                ...recipient,
+                publicKey: val.publicKey,
+                name: val.account.name,
+                description: val.account.description,
+                amountDonated: val.account.amountDonated.toNumber(),
+                amountRequired: val.account.amountRequired.toNumber(),
+              });
+            }
+          });
         }
       }
     } catch (err: any) {
