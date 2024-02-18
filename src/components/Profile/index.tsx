@@ -51,7 +51,7 @@ function Index() {
 
   return (
     <Container
-      maxW={{ base: "85%", md: "60%" }}
+      maxW={{ base: "90%", md: "60%" }}
       h={"100vh"}
       mt={10}
       border={"1px solid white"}

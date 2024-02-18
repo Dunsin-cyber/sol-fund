@@ -54,7 +54,7 @@ function Details() {
   };
   return (
     <Container
-      maxW="60%"
+      maxW={{ base: "90%", md: "60%" }}
       h={"100vh"}
       my={8}
       border={"1px solid white"}
