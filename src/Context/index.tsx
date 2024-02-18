@@ -5,7 +5,7 @@ import {
   useConnection,
   useWallet,
 } from "@solana/wallet-adapter-react";
-import { PublicKey, SystemProgram } from "@solana/web3.js";
+import { PublicKey, SystemProgram, Connection } from "@solana/web3.js";
 import idl from "../idl.json";
 import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
 import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
@@ -296,8 +296,30 @@ export const AppProvider = ({ children }: any) => {
     }
   };
 
+  const getTransactions = async () => {
+    const endpoint =
+      "https://virulent-ultra-replica.solana-devnet.quiknode.pro/8d0f174b8b11b55aee43b27a6f913fff39963312/";
+    const solanaConnection = new Connection(endpoint);
+
+    if (smartContract && publicKey) {
+      let transactionList = await solanaConnection?.getSignaturesForAddress(
+        publicKey,
+        { limit: 5 }
+      );
+      transactionList.forEach((transaction: any, i: number) => {
+        const date = new Date(transaction.blockTime * 1000);
+        console.log(`Transaction No: ${i + 1}`);
+        console.log(`Signature: ${transaction.signature}`);
+        console.log(`Time: ${date}`);
+        console.log(`Status: ${transaction.confirmationStatus}`);
+        console.log("-".repeat(20));
+        console.log(transaction);
+      });
+    }
+  };
   React.useEffect(() => {
     getUser();
+    getTransactions();
   }, [publicKey]);
 
   return (

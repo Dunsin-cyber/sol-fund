@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Container,
@@ -18,11 +18,19 @@ import {
   TableCaption,
   TableContainer,
   Link,
+  Input,
+  Button,
 } from "@chakra-ui/react";
 import { AppContext } from "../../Context";
 import { useLocation } from "react-router-dom";
 import Navbar from "../Navbar";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import { CopyIcon } from "@chakra-ui/icons";
+
+import { motion } from "framer-motion";
+
+const AnimatedCopyIcon = motion(CopyIcon);
 
 function Index() {
   const { user } = React.useContext(AppContext);
@@ -31,9 +39,19 @@ function Index() {
   const fullUrl = window.location.origin + "/details/" + publicKey?.toString();
 
   const percentDonated = (user?.amountDonated / user?.amountRequired) * 100;
+
+  const [isHovered, setIsHovered] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
+
+  const variants = {
+    normal: { scale: 1 },
+    hovered: { scale: 1.2 },
+    clicked: { rotate: 360, scale: 1.2, color: "#341A41" },
+  };
+
   return (
     <Container
-      maxW="60%"
+      maxW={{ base: "85%", md: "60%" }}
       h={"100vh"}
       mt={10}
       border={"1px solid white"}
@@ -42,7 +60,11 @@ function Index() {
     >
       <Navbar />
       <Heading>Profile</Heading>
-      <Flex justify={"space-evenly"} align={"center"}>
+      <Flex
+        justify={"space-evenly"}
+        align={"center"}
+        flexDirection={{ base: "column", md: "row" }}
+      >
         <CircularProgress
           mt={10}
           value={percentDonated}
@@ -74,17 +96,37 @@ function Index() {
             </Text>
             <Text fontSize={"24px"}> {user.amountDonated}</Text>
           </Flex>
+          <Flex mt={10} gap={3} justify={"center"} align={"center"}>
+            <Text fontWeight="500">Donation Link</Text>
+            <Link>
+              <Input
+                fontStyle={"italic"}
+                color="primary.50"
+                isReadOnly
+                value={fullUrl}
+                w={"170px"}
+              />
+              <CopyToClipboard text={fullUrl}>
+                <AnimatedCopyIcon
+                  boxSize={6}
+                  variants={variants}
+                  initial="normal"
+                  animate={
+                    isClicked ? "clicked" : isHovered ? "hovered" : "normal"
+                  }
+                  onMouseEnter={() => setIsHovered(true)}
+                  onMouseLeave={() => setIsHovered(false)}
+                  onClick={() => setIsClicked(!isClicked)}
+                />
+              </CopyToClipboard>
+            </Link>
+          </Flex>
         </Box>
       </Flex>
       <Center>
-        <Flex mt={10} gap={3} justify={"center"} align={"center"}>
-          <Text fontSize={"24px"}>Donation Link</Text>
-          <Link>
-            <Text fontStyle={"italic"} color="primary.50">
-              {fullUrl}
-            </Text>
-          </Link>
-        </Flex>
+        <Heading my={8} textAlign={"center"}>
+          Transaction History
+        </Heading>
       </Center>
     </Container>
   );
