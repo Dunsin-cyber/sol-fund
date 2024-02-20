@@ -42,12 +42,13 @@ function Message() {
         {/* input section */}
         <Flex
           h="15%"
-          mt={"250px"}
+          mt={"400px"}
           className="chat-box"
           borderBottomRadius={5}
           alignItems="center"
           border={`1px solid primary.50`}
           color="white"
+          mx={2}
         >
           <InputGroup size="md" px={4}>
             <Input
