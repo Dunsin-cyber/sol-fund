@@ -16,3 +16,10 @@ export type CampaignT = {
   donationComplete: boolean;
   id: number;
 };
+
+export type TransactionT = {
+  transactionNo: number;
+  time: Date;
+  status: string;
+  signature: string;
+};

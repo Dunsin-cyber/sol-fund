@@ -26,6 +26,7 @@ import Navbar from "../Navbar";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { useAppSelector } from "../../redux/hook";
+import { TransactionT } from "../../redux/types";
 
 function Details() {
   const { id }: any = useParams();
@@ -124,49 +125,28 @@ function Details() {
 
 export default Details;
 
-function Transactions() {
+export function Transactions() {
+  const transaction = useAppSelector((state) => state.transction);
+
   return (
     <TableContainer>
       <Table variant="simple">
         <TableCaption>Transaction details</TableCaption>
         <Thead>
           <Tr>
+            <Th>Signature</Th>
             <Th>Date</Th>
-            <Th>Amount</Th>
-            <Th> Address</Th>
+            <Th>Status</Th>
           </Tr>
         </Thead>
         <Tbody>
-          <Tr>
-            <Td>2-23-2034</Td>
-            <Td>$500</Td>
-            <Td>7sa87c8asc87ash8shc8ahs8has8c7</Td>
-          </Tr>
-          <Tr>
-            <Td>$2-23-2034</Td>
-            <Td>$20</Td>
-            <Td>7sa87c8asc87ash8shc8ahs8has8c7</Td>
-          </Tr>
-          <Tr>
-            <Td>2-23-2034</Td>
-            <Td>$300</Td>
-            <Td>7sa87c8asc87ash8shc8ahs8has8c7</Td>
-          </Tr>
-          <Tr>
-            <Td>2-23-2034</Td>
-            <Td>$500</Td>
-            <Td>7sa87c8asc87ash8shc8ahs8has8c7</Td>
-          </Tr>{" "}
-          <Tr>
-            <Td>2-23-2034</Td>
-            <Td>$500</Td>
-            <Td>7sa87c8asc87ash8shc8ahs8has8c7</Td>
-          </Tr>{" "}
-          <Tr>
-            <Td>2-23-2034</Td>
-            <Td>$500</Td>
-            <Td>7sa87c8asc87ash8shc8ahs8has8c7</Td>
-          </Tr>{" "}
+          {transaction?.map((val: TransactionT) => (
+            <Tr key={val.transactionNo}>
+              <Td>{val.signature.slice(0, 30)}...</Td>
+              <Td>{val.time.toISOString()}</Td>
+              <Td>{val.status}</Td>
+            </Tr>
+          ))}
         </Tbody>
       </Table>
     </TableContainer>

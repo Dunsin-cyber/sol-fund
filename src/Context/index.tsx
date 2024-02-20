@@ -14,6 +14,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
 import { addRecipient } from "../redux/slice/RecepientSlice";
 import { addCampaign, clearCampaign } from "../redux/slice/CampaignSlice";
+import {
+  addTransaction,
+  clearTransactions,
+} from "../redux/slice/TransactionSlice";
 
 const PROGRAM_KEY = new PublicKey(idl.metadata.address);
 
@@ -282,20 +286,29 @@ export const AppProvider = ({ children }: any) => {
         publicKey,
         { limit: 5 }
       );
+      dispatch(clearTransactions());
       transactionList.forEach((transaction: any, i: number) => {
         const date = new Date(transaction.blockTime * 1000);
-        console.log(`Transaction No: ${i + 1}`);
-        console.log(`Signature: ${transaction.signature}`);
-        console.log(`Time: ${date}`);
-        console.log(`Status: ${transaction.confirmationStatus}`);
-        console.log("-".repeat(20));
-        console.log(transaction);
+        dispatch(
+          addTransaction({
+            transactionNo: i + 1,
+            time: date,
+            signature: transaction.signature,
+            status: transaction.confirmationStatus,
+          })
+        );
+        // console.log(`Transaction No: ${i + 1}`);
+        // console.log(`Signature: ${transaction.signature}`);
+        // console.log(`Time: ${date}`);
+        // console.log(`Status: ${transaction.confirmationStatus}`);
+        // console.log("-".repeat(20));
+        // console.log(transaction);
       });
     }
   };
   React.useEffect(() => {
     getUser();
-    // getTransactions();
+    getTransactions();
   }, [publicKey]);
 
   return (

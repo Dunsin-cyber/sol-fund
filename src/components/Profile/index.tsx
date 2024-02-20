@@ -29,6 +29,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import { CopyIcon } from "@chakra-ui/icons";
 
 import { motion } from "framer-motion";
+import { Transactions } from "../Campaign/Details";
 
 const AnimatedCopyIcon = motion(CopyIcon);
 
@@ -123,10 +124,11 @@ function Index() {
           </Flex>
         </Box>
       </Flex>
-      <Center>
+      <Center flexDirection={"column"}>
         <Heading my={8} textAlign={"center"}>
           Transaction History
         </Heading>
+        <Transactions />
       </Center>
     </Container>
   );
