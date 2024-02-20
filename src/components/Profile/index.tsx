@@ -36,7 +36,7 @@ function Index() {
   const { user } = React.useContext(AppContext);
   const location = useLocation();
   const { publicKey } = useWallet();
-  const fullUrl = window.location.origin + "/details/" + publicKey?.toString();
+  const fullUrl = window.location.origin + "/details/" + user.pda;
 
   const percentDonated = (user?.amountDonated / user?.amountRequired) * 100;
 

@@ -24,6 +24,18 @@ const App = () => {
     }
   }, [publicKey]);
 
+  React.useEffect(() => {
+    if (publicKey === null) {
+      if (location.pathname.includes("details/")) {
+        return;
+      } else {
+        navigate("/", {
+          state: location || "campaign",
+        });
+      }
+    }
+  }, []);
+
   // if (initialized) {
   return (
     <React.Fragment>

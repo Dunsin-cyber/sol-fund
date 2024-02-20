@@ -33,6 +33,7 @@ function Details() {
     React.useContext(AppContext);
 
   const recipient = useAppSelector((state) => state.recipient);
+  console.log(recipient);
 
   const { publicKey } = useWallet();
 

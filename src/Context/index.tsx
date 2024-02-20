@@ -73,6 +73,7 @@ export const AppProvider = ({ children }: any) => {
   const anchorWallet = useAnchorWallet();
   const { connection } = useConnection();
   const [user, setUser] = React.useState({
+    pda: "",
     name: "",
     amountDonated: 0,
     amountRequired: 0,
@@ -95,7 +96,7 @@ export const AppProvider = ({ children }: any) => {
       return new anchor.Program(idl as any, PROGRAM_KEY, provider);
     }
   }, [connection, anchorWallet]);
-
+  console.log("PUBLIC KEY", publicKey?.toString());
   const getUser = async () => {
     setTransactionPending(true);
     try {
@@ -110,8 +111,10 @@ export const AppProvider = ({ children }: any) => {
         );
 
         if (data) {
+          // console.log("pda", CampaignPda.toString());
           setUser({
             ...user,
+            pda: CampaignPda.toString(),
             name: data.name,
             amountDonated: data.amountDonated.toNumber(),
             amountRequired: data.amountRequired.toNumber(),
@@ -207,14 +210,15 @@ export const AppProvider = ({ children }: any) => {
       if (smartContract && publicKey) {
         const val: any = await smartContract.account.campaign.all();
         if (val) {
-          // console.log(val);
+          console.log(val);
           // const val: any = campaign.find((d) => {
           //   return d.publicKey.toString() === pub;
           // });
           // campaign.map((val: any) => {
           for (let i = 0; i < val.length; i++) {
-            if (val[i].publicKey.toString() === pub) {
-              console.log(val[i]);
+            console.log(val[i], val[i].publicKey.toString(), pub.toString());
+            if (val[i].publicKey.toString() === pub.toString()) {
+              // console.log(val[i]);
               dispatch(
                 addRecipient({
                   publicKey: val[i].publicKey,
