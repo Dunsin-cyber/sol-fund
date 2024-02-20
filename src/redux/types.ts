@@ -1,6 +1,6 @@
 export type RecipientT = {
   name: string;
-  publicKey: string;
+  publicKey: any;
   amountDonated: number;
   amountRequired: number;
   description: string;

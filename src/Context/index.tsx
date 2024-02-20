@@ -11,7 +11,7 @@ import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pub
 import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../redux/hook";
+import { useAppDispatch, useAppSelector } from "../redux/hook";
 import { addRecipient } from "../redux/slice/RecepientSlice";
 
 const PROGRAM_KEY = new PublicKey(idl.metadata.address);
@@ -29,14 +29,6 @@ type campaignT = {
   description: string;
   donationComplete: boolean;
   id: number;
-};
-
-type recipientT = {
-  name: string;
-  description: string;
-  amountDonated: number;
-  amountRequired: number;
-  publicKey: any;
 };
 
 export const AppContext = React.createContext<{
@@ -58,7 +50,6 @@ export const AppContext = React.createContext<{
   campaigns: [campaignT][];
   setCampaigns: any;
   getACampaign: any;
-  recipient: recipientT;
   donate: any;
 }>({
   step: 1,
@@ -79,13 +70,6 @@ export const AppContext = React.createContext<{
   campaigns: [],
   setCampaigns: undefined,
   getACampaign: undefined,
-  recipient: {
-    publicKey: "",
-    name: "",
-    description: "",
-    amountDonated: 0,
-    amountRequired: 0,
-  },
   donate: undefined,
 });
 
@@ -112,15 +96,9 @@ export const AppProvider = ({ children }: any) => {
   const { publicKey } = useWallet();
   const navigate = useNavigate();
   const location = useLocation();
-  const [recipient, setRecipient] = React.useState({
-    publicKey: publicKey,
-    name: "",
-    description: "",
-    amountDonated: 0,
-    amountRequired: 0,
-  });
   // console.log("publickey type", publicKey);
   const dispatch = useAppDispatch();
+  const recipient = useAppSelector((state) => state.recipient);
   const smartContract = React.useMemo(() => {
     if (anchorWallet && publicKey) {
       const provider = new anchor.AnchorProvider(
@@ -252,7 +230,7 @@ export const AppProvider = ({ children }: any) => {
               console.log(val[i]);
               dispatch(
                 addRecipient({
-                  publicKey: val[i].publicKey.toString(),
+                  publicKey: val[i].publicKey,
                   name: val[i].account.name,
                   description: val[i].account.description,
                   amountDonated: val[i].account.amountDonated.toNumber(),
@@ -350,7 +328,6 @@ export const AppProvider = ({ children }: any) => {
         campaigns,
         setCampaigns,
         getACampaign,
-        recipient,
         donate,
       }}
     >
