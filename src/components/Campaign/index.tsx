@@ -14,14 +14,16 @@ import {
 import { AppContext } from "../../Context";
 import { Link } from "react-router-dom";
 import Navbar from "../Navbar";
+import { CampaignT } from "../../redux/types";
+import { useAppSelector } from "../../redux/hook";
 
 function Campaign() {
-  const { campaigns, getAllCampaigns } = React.useContext(AppContext);
+  const { getAllCampaigns } = React.useContext(AppContext);
   React.useEffect(() => {
-    if (campaigns.length < 1) {
-      getAllCampaigns();
-    }
+    getAllCampaigns();
   }, []);
+
+  const campaigns = useAppSelector((state) => state.campaign);
   return (
     <Container
       maxW={{ base: "90%", md: "60%" }}
@@ -42,18 +44,18 @@ function Campaign() {
         templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(3, 1fr)" }}
         gap={6}
       >
-        {campaigns?.map((camp) => (
+        {campaigns?.map((camp: CampaignT) => (
           <Link
             style={{ textDecoration: "none" }}
-            key={camp[0].pubKey}
-            to={`/details/${camp[0].pubKey}`}
+            key={camp.pubKey}
+            to={`/details/${camp.pubKey}`}
           >
             <Card
-              id={camp[0].pubKey}
-              amountDonated={camp[0].amountDonated}
-              amountRequired={camp[0].amountRequired}
-              name={camp[0].name}
-              description={camp[0].description}
+              id={camp.pubKey}
+              amountDonated={camp.amountDonated}
+              amountRequired={camp.amountRequired}
+              name={camp.name}
+              description={camp.description}
             />
           </Link>
         ))}

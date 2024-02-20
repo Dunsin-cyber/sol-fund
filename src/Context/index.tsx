@@ -13,22 +13,13 @@ import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
 import { addRecipient } from "../redux/slice/RecepientSlice";
+import { addCampaign, clearCampaign } from "../redux/slice/CampaignSlice";
 
 const PROGRAM_KEY = new PublicKey(idl.metadata.address);
 
 type bioT = {
   name: string;
   description: string;
-};
-
-type campaignT = {
-  pubKey: string;
-  name: string;
-  amountDonated: number;
-  amountRequired: number;
-  description: string;
-  donationComplete: boolean;
-  id: number;
 };
 
 export const AppContext = React.createContext<{
@@ -47,8 +38,6 @@ export const AppContext = React.createContext<{
   setAmount: any;
   initUser: any;
   getAllCampaigns: any;
-  campaigns: [campaignT][];
-  setCampaigns: any;
   getACampaign: any;
   donate: any;
 }>({
@@ -67,8 +56,6 @@ export const AppContext = React.createContext<{
   setAmount: undefined,
   initUser: undefined,
   getAllCampaigns: undefined,
-  campaigns: [],
-  setCampaigns: undefined,
   getACampaign: undefined,
   donate: undefined,
 });
@@ -92,7 +79,6 @@ export const AppProvider = ({ children }: any) => {
     description: "",
     donationComplete: false,
   });
-  const [campaigns, setCampaigns] = React.useState<[campaignT][]>([]);
   const { publicKey } = useWallet();
   const navigate = useNavigate();
   const location = useLocation();
@@ -192,6 +178,7 @@ export const AppProvider = ({ children }: any) => {
         const data = await smartContract.account.campaign.all();
         // campaigns.map((d) => d.pop());
         if (data) {
+          dispatch(clearCampaign());
           data.forEach((d: any) => {
             var res = {
               pubKey: d.publicKey.toString(),
@@ -202,7 +189,7 @@ export const AppProvider = ({ children }: any) => {
               donationComplete: d.account.donationComplete,
               id: d.account.id,
             };
-            campaigns.push([res]);
+            dispatch(addCampaign(res));
           });
           return;
         }
@@ -325,8 +312,6 @@ export const AppProvider = ({ children }: any) => {
         setAmount,
         initUser,
         getAllCampaigns,
-        campaigns,
-        setCampaigns,
         getACampaign,
         donate,
       }}
