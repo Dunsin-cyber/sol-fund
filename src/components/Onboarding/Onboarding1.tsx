@@ -6,6 +6,7 @@ import {
   Grid,
   Input,
   Select,
+  Show,
   Tag,
   TagCloseButton,
   TagLabel,
@@ -25,27 +26,29 @@ function Onboarding1() {
   return (
     <Flex>
       {/* Left */}
-      <Box
-        display="flex"
-        justifyContent={"center"}
-        pt="40vh"
-        px="34px"
-        w={"30%"}
-        bgColor="primary.50"
-        color="white"
-      >
-        <Text fontSize="36px" fontWeight={700}>
-          Let's begin your fundraising journey
-        </Text>
-      </Box>
+      <Show above="md">
+        <Box
+          display="flex"
+          justifyContent={"center"}
+          pt="40vh"
+          px="34px"
+          // w={"30%"}
+          bgColor="primary.50"
+          color="white"
+        >
+          <Text fontSize="36px" fontWeight={700}>
+            Let's begin your fundraising journey
+          </Text>
+        </Box>
+      </Show>
       <Box h={"100vh"} w={"1px"} bgColor={"white"} />
       {/* Right */}
       <Box
         px={10}
-        pl="150px"
-        pt="30vh"
+        pl={{ md: "150px" }}
+        pt={{ base: "5vh", md: "30vh" }}
         color="black"
-        w="70%"
+        w={{ base: "90%", md: "70%" }}
         bgColor="primary.100"
       >
         <ArrowBackIcon
@@ -110,7 +113,11 @@ function Step1() {
         <Input value={publicKey?.toString()} isReadOnly size="lg" />
       </Flex>
       {/* funding sector */}
-      <Grid pt={8} templateColumns="repeat(9, 1fr)" gap={6}>
+      <Grid
+        pt={8}
+        templateColumns={{ base: "repeat(3, 1fr)", md: "repeat(9, 1fr)" }}
+        gap={6}
+      >
         {tags.map((tag: any) => (
           <Tag
             cursor="pointer"
@@ -127,13 +134,17 @@ function Step1() {
         ))}
       </Grid>
       <Text>what's the funding for?</Text>
-      <Grid pt={8} templateColumns="repeat(9, 1fr)" gap={6}>
+      <Grid
+        pt={8}
+        templateColumns={{ base: "repeat(3, 1fr)", md: "repeat(9, 1fr)" }}
+        gap={6}
+      >
         {tagVal.map((tag) => (
           <Tag
             cursor="pointer"
             py={4}
-            pl={4}
-            size="xl"
+            px={4}
+            size={{ base: "sm", md: "xl" }}
             variant="solid"
             key={tag}
             onClick={() => {

@@ -13,12 +13,11 @@ import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../Context";
 
 function Onboarding3() {
-  const { bio, setBio , initUser} = React.useContext(AppContext);
+  const { bio, setBio, initUser } = React.useContext(AppContext);
   const navigate = useNavigate();
 
   const handleCreateUser = () => {
-    initUser()
-  
+    initUser();
   };
   return (
     <Box>
@@ -32,8 +31,8 @@ function Onboarding3() {
           primarily with solana
         </Text>
       </Box>
-      {/* pick funding type */}
-      <Flex flexDirection="column" gap={3} pt={4} w={"50%"}>
+      {/* put your details */}
+      <Flex flexDirection="column" gap={3} pt={4} w={"100%"}>
         <Text my={3}>Name</Text>
         <Input
           value={bio.name}
