@@ -6,6 +6,7 @@ import Onboarding1 from "./components/Onboarding/Onboarding1";
 import Campaign from "./components/Campaign";
 import Details from "./components/Campaign/Details";
 import { useWallet } from "@solana/wallet-adapter-react";
+import MessagePage from "./pages/Message";
 
 const App = () => {
   // const { initialized } = React.useContext(AppContext);
@@ -36,7 +37,6 @@ const App = () => {
     }
   }, []);
 
-  // if (initialized) {
   return (
     <React.Fragment>
       <Routes>
@@ -45,18 +45,10 @@ const App = () => {
         <Route path="profile" element={<Profile />} />
         <Route path="campaign" element={<Campaign />} />
         <Route path="details/:id" element={<Details />} />
+        <Route path="message" element={<MessagePage />} />
       </Routes>
     </React.Fragment>
   );
-  // } else {
-  //   return (
-  //     <React.Fragment>
-  //       <Routes>
-  //         <Route path="/" element={<LandingPage />} />
-  //       </Routes>
-  //     </React.Fragment>
-  //   );
-  // }
 };
 
 export default App;

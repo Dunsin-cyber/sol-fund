@@ -100,7 +100,6 @@ export const AppProvider = ({ children }: any) => {
       return new anchor.Program(idl as any, PROGRAM_KEY, provider);
     }
   }, [connection, anchorWallet]);
-  console.log("PUBLIC KEY", publicKey?.toString());
   const getUser = async () => {
     setTransactionPending(true);
     try {

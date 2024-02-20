@@ -20,13 +20,14 @@ import {
   NumberInput,
   NumberInputField,
 } from "@chakra-ui/react";
-import { useParams } from "react-router-dom";
+import { Navigate, Router, useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../../Context";
 import Navbar from "../Navbar";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { useAppSelector } from "../../redux/hook";
 import { TransactionT } from "../../redux/types";
+import { ChatIcon } from "@chakra-ui/icons";
 
 function Details() {
   const { id }: any = useParams();
@@ -35,6 +36,8 @@ function Details() {
 
   const recipient = useAppSelector((state) => state.recipient);
   console.log(recipient);
+
+  const navigate = useNavigate();
 
   const { publicKey } = useWallet();
 
@@ -78,7 +81,9 @@ function Details() {
           <Navbar />
           {recipient.name.length > 2 ? (
             <>
-              <Heading>SolFunding for {recipient.name}</Heading>
+              <Heading textAlign="center">
+                SolFunding for {recipient.name}
+              </Heading>
               <Text>{recipient.description}</Text>
               <Box mt={"40px"}>
                 <Progress value={progress} />
@@ -106,6 +111,16 @@ function Details() {
                   >
                     Send {recipient.name} some Sol
                   </Button>
+                  {/* Message */}
+                  <Flex
+                    justify="flex-end"
+                    gap={3}
+                    cursor={"pointer"}
+                    onClick={() => navigate("/message")}
+                  >
+                    <Text>Send a Message</Text>
+                    <ChatIcon color="primary.50" boxSize={6} />
+                  </Flex>
                 </Flex>
               </Box>
               {/* transaction */}
