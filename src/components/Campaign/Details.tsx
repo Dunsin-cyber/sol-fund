@@ -25,16 +25,19 @@ import { AppContext } from "../../Context";
 import Navbar from "../Navbar";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { useAppSelector } from "../../redux/hook";
 
 function Details() {
   const { id }: any = useParams();
-  const { getACampaign, recipient, donate, transactionPending } =
+  const { getACampaign, donate, transactionPending } =
     React.useContext(AppContext);
+
+  const recipient = useAppSelector((state) => state.recipient);
 
   const { publicKey } = useWallet();
 
   const [amount, setAmount] = React.useState<number>(0);
-  useEffect(() => {
+  React.useMemo(() => {
     const call = async () => {
       if (id) {
         await getACampaign(id);
@@ -71,39 +74,47 @@ function Details() {
       ) : (
         <>
           <Navbar />
-          <Heading>SolFunding for {recipient.name}</Heading>
-          <Text>{recipient.description}</Text>
-          <Box mt={"40px"}>
-            <Progress value={progress} />
-            <Flex justify={"flex-end"}>
-              <Text mt={4}>
-                $ {amountLeft.toLocaleString()} to reach goal🎉
-              </Text>
-            </Flex>
-            <Flex justify={"center"} gap={3} flexDirection={"column"}>
-              <NumberInput
-                value={format(amount)}
-                onChange={(value: string) => setAmount(parse(value))}
-                defaultValue={0}
-                clampValueOnBlur={false}
-                h={"40px"}
-              >
-                <NumberInputField />
-              </NumberInput>
-              <Button
-                py={7}
-                px={5}
-                onClick={handleDonate}
-                isDisabled={amount < 0.1 || transactionPending}
-                isLoading={transactionPending}
-              >
-                Send {recipient.name} some Sol
-              </Button>
-            </Flex>
-          </Box>
-          {/* transaction */}
-          <Box h={"100px"} />
-          <Transactions />
+          {recipient.name.length > 2 ? (
+            <>
+              <Heading>SolFunding for {recipient.name}</Heading>
+              <Text>{recipient.description}</Text>
+              <Box mt={"40px"}>
+                <Progress value={progress} />
+                <Flex justify={"flex-end"}>
+                  <Text mt={4}>
+                    $ {amountLeft.toLocaleString()} to reach goal🎉
+                  </Text>
+                </Flex>
+                <Flex justify={"center"} gap={3} flexDirection={"column"}>
+                  <NumberInput
+                    value={format(amount)}
+                    onChange={(value: string) => setAmount(parse(value))}
+                    defaultValue={0}
+                    clampValueOnBlur={false}
+                    h={"40px"}
+                  >
+                    <NumberInputField />
+                  </NumberInput>
+                  <Button
+                    py={7}
+                    px={5}
+                    onClick={handleDonate}
+                    isDisabled={amount < 0.1 || transactionPending}
+                    isLoading={transactionPending}
+                  >
+                    Send {recipient.name} some Sol
+                  </Button>
+                </Flex>
+              </Box>
+              {/* transaction */}
+              <Box h={"100px"} />
+              <Transactions />
+            </>
+          ) : (
+            <Heading textAlign={"center"}>
+              Opps!... You can't solFund yourself
+            </Heading>
+          )}
         </>
       )}
     </Container>

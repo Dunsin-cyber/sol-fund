@@ -11,6 +11,8 @@ import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pub
 import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../redux/hook";
+import { addRecipient } from "../redux/slice/RecepientSlice";
 
 const PROGRAM_KEY = new PublicKey(idl.metadata.address);
 
@@ -118,7 +120,7 @@ export const AppProvider = ({ children }: any) => {
     amountRequired: 0,
   });
   // console.log("publickey type", publicKey);
-
+  const dispatch = useAppDispatch();
   const smartContract = React.useMemo(() => {
     if (anchorWallet && publicKey) {
       const provider = new anchor.AnchorProvider(
@@ -238,25 +240,30 @@ export const AppProvider = ({ children }: any) => {
   const getACampaign = async (pub: string) => {
     try {
       if (smartContract && publicKey) {
-        const campaign = await smartContract.account.campaign.all();
-        if (campaign) {
-          // console.log(campaign)
+        const val: any = await smartContract.account.campaign.all();
+        if (val) {
+          // console.log(val);
           // const val: any = campaign.find((d) => {
           //   return d.publicKey.toString() === pub;
           // });
-          campaign.map((val: any) => {
-            if (val.publicKey.toString() == pub) {
-              console.log("val", val);
-              setRecipient({
-                ...recipient,
-                publicKey: val.publicKey,
-                name: val.account.name,
-                description: val.account.description,
-                amountDonated: val.account.amountDonated.toNumber(),
-                amountRequired: val.account.amountRequired.toNumber(),
-              });
+          // campaign.map((val: any) => {
+          for (let i = 0; i < val.length; i++) {
+            if (val[i].publicKey.toString() === pub) {
+              console.log(val[i]);
+              dispatch(
+                addRecipient({
+                  publicKey: val[i].publicKey.toString(),
+                  name: val[i].account.name,
+                  description: val[i].account.description,
+                  amountDonated: val[i].account.amountDonated.toNumber(),
+                  amountRequired: val[i].account.amountRequired.toNumber(),
+                  donationComplete: val[i].account.donationComplete,
+                  // donationComplete: false,
+                })
+              );
             }
-          });
+          }
+          // });
         }
       }
     } catch (err: any) {
@@ -319,7 +326,7 @@ export const AppProvider = ({ children }: any) => {
   };
   React.useEffect(() => {
     getUser();
-    getTransactions();
+    // getTransactions();
   }, [publicKey]);
 
   return (
