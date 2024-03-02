@@ -7,7 +7,7 @@ use anchor_spl::metadata::{
     CreateMetadataAccountsV3, Metadata,
 };
 use anchor_spl::token::{mint_to, Mint, MintTo, Token, TokenAccount};
-use mpl_token_metadata::types::{Collection, Creator, DataV2};
+use mpl_token_metadata::state::{Collection, Creator, DataV2};
 
 declare_id!("C6i6SQDkP8nbL3ie1PacW2t3Z62zsrbbJE5YiJR7D9u8");
 
