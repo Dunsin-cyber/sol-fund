@@ -7,6 +7,7 @@ import Campaign from "./components/Campaign";
 import Details from "./components/Campaign/Details";
 import { useWallet } from "@solana/wallet-adapter-react";
 import MessagePage from "./pages/Message";
+import ConnectWallet from "./components/LandingPage/ConnectWallet";
 
 const App = () => {
   // const { initialized } = React.useContext(AppContext);
@@ -41,6 +42,7 @@ const App = () => {
     <React.Fragment>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="connect-wallet" element={<ConnectWallet />} />
         <Route path="onboarding" element={<Onboarding1 />} />
         <Route path="profile" element={<Profile />} />
         <Route path="campaign" element={<Campaign />} />

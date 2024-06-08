@@ -16,27 +16,28 @@ const theme = extendTheme({
   styles: {
     global: {
       body: {
-        bg: "#EBD3F7",
-        color: "black",
+        bgGradient: "linear-gradient(133.6deg, #301934 25.61%, #C61EAF 62.74%)",
+        // bg: "#301934",
+        color: "white",
       },
     },
   },
   components: {
     Button: {
       baseStyle: {
-        bg: "#341A41",
+        bg: "#4F4CDA",
         color: `white`,
         border: `1px white solid`,
         _hover: {
           backgroundColor: "transparent",
-          color: "#341A41",
+          color: "#4F4CDA",
         },
       },
     },
   },
   fonts: {
-    heading: "ubuntu-mono, sans-serif",
-    body: "montserrat, ubuntu-mono, sans-serif",
+    heading: "Exo, sans-serif",
+    body: "Montserrat, sans-serif",
   },
 });
 
