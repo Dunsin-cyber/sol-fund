@@ -16,7 +16,7 @@ const theme = extendTheme({
   styles: {
     global: {
       body: {
-        bgGradient: "linear-gradient(133.6deg, #301934 25.61%, #C61EAF 62.74%)",
+        bgGradient: "linear(to-br, #0A0315, #2C014D)",
         // bg: "#301934",
         color: "white",
       },

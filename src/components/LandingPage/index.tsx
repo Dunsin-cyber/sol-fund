@@ -72,7 +72,8 @@ function LandingPage() {
               variant={"purple"}
               px={2}
               py={2}
-              w={"20%"}
+              maxW={"20%"}
+              fontSize="10px"
               onClick={() => {
                 navigate("/connect-wallet");
               }}
@@ -89,6 +90,7 @@ function LandingPage() {
           justify={{ base: "center", md: "flex-end" }}
           align={{ base: "center", md: "flex-end" }}
           w={{ base: "100%", md: "40%" }}
+          mt={{ base: 8, md: 0 }}
         >
           <Image
             w={{ base: 211, md: 448 }}

@@ -30,6 +30,7 @@ import { CopyIcon } from "@chakra-ui/icons";
 
 import { motion } from "framer-motion";
 import { Transactions } from "../Campaign/Details";
+import SideNav from "../SideNav";
 
 const AnimatedCopyIcon = motion(CopyIcon);
 
@@ -51,7 +52,12 @@ function Index() {
   };
 
   return (
-    <Container
+    <SideNav>
+      <Box>
+        PROFILEEEEEEEEEEEEEEEEEEEEEEEEeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeEEPROFILEEEEEEEEEEEEEEEEEEEEEEEEeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeEE
+      </Box>
+    </SideNav>
+    /*     <Container
       maxW={{ base: "90%", md: "60%" }}
       h={"100vh"}
       mt={10}
@@ -76,8 +82,7 @@ function Index() {
             {Math.floor(percentDonated)}%
           </CircularProgressLabel>
         </CircularProgress>
-        {/* <Text>we are at 40 percent</Text> */}
-        {/* side details */}
+       
         <Box>
           <Flex justify={"center"} align={"center"} my={3} gap={3}>
             <Text fontWeight="500" fontSize={"36px"}>
@@ -130,7 +135,7 @@ function Index() {
         </Heading>
         <Transactions />
       </Center>
-    </Container>
+    </Container> */
   );
 }
 
