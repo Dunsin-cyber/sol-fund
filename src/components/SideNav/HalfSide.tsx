@@ -86,80 +86,13 @@ function index({ children }: any) {
         bgColor={"#181425"}
         bgGradient="linear(to-br, #0A0315, #2C014D)"
         borderRadius={"15px"}
-        w={{ base: "100%", md: "60%" }}
+        w={{ base: "100%", md: "80%" }}
       >
         {children}
       </Box>
       {/* right */}
-      <Hide below="md">
-        <Box
-          h="100vh"
-          w="20%"
-          justifyContent={"flex-start"}
-          mt={8}
-          alignItems={"center"}
-          display="flex"
-          flexDirection={"column"}
-          gap={10}
-        >
-          <Box gap={1}>
-            <Image src="main-avatar.svg" w="166px" h="166px" />
-            <Text color="black">ox3224dds....ww2w</Text>
-          </Box>
-
-          <Box>
-            {/* Recent Transction */}
-
-            <Text mb={5} color="black">
-              Recent Activity
-            </Text>
-            <Flex
-              h={"40vh"}
-              overflowY={"scroll"}
-              css={{
-                "&::-webkit-scrollbar": {
-                  display: "none", // Hide scrollbar for Chrome, Safari, and Opera
-                },
-                scrollbarWidth: "none", // Hide scrollbar for Firefox
-                msOverflowStyle: "none", // Hide scrollbar for Internet Explorer and Edge
-              }}
-              flexDirection="column"
-              gap={3}
-            >
-              <ActivityCard />
-              <ActivityCard />
-              <ActivityCard />
-              <ActivityCard />
-              <ActivityCard />
-              <ActivityCard />
-              <ActivityCard />
-              <ActivityCard />
-            </Flex>
-          </Box>
-        </Box>
-      </Hide>
     </Flex>
   );
 }
 
 export default index;
-
-function ActivityCard() {
-  return (
-    <Flex
-      maxW="250px"
-      align="center"
-      h={"57px"}
-      bgColor="white"
-      borderRadius="10px"
-      px={3}
-      gap={2}
-    >
-      <Avatar />
-      <Box fontSize="10px" color="black">
-        <Text>Daaps crypto</Text>
-        <Text>Funded crypto to your pool</Text>
-      </Box>
-    </Flex>
-  );
-}

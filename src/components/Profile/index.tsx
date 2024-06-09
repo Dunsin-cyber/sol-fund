@@ -20,6 +20,9 @@ import {
   Link,
   Input,
   Button,
+  Image,
+  VStack,
+  Progress,
 } from "@chakra-ui/react";
 import { AppContext } from "../../Context";
 import { useLocation } from "react-router-dom";
@@ -46,15 +49,94 @@ function Index() {
   const [isClicked, setIsClicked] = useState(false);
 
   const variants = {
-    normal: { scale: 1 },
+    normal: { scale: 1, color: "#7F7F7F" },
     hovered: { scale: 1.2 },
     clicked: { rotate: 360, scale: 1.2, color: "#341A41" },
   };
 
   return (
     <SideNav>
-      <Box>
-        PROFILEEEEEEEEEEEEEEEEEEEEEEEEeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeEEPROFILEEEEEEEEEEEEEEEEEEEEEEEEeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeEE
+      {/*Selection */}
+      <Flex
+        mt={8}
+        gap={8}
+        overflowX={"scroll"}
+        css={{
+          "&::-webkit-scrollbar": {
+            display: "none", // Hide scrollbar for Chrome, Safari, and Opera
+          },
+          scrollbarWidth: "none", // Hide scrollbar for Firefox
+          msOverflowStyle: "none", // Hide scrollbar for Internet Explorer and Edge
+        }}
+      >
+        <OptionCard
+          title={"Lending"}
+          description="This feature is coming soon"
+        />
+        <OptionCard
+          title={"Crowdfunding"}
+          description="easily raise funds under 10 seconds"
+        />
+        <OptionCard
+          title={"Borrowing"}
+          description="This feature is coming soon"
+        />
+      </Flex>
+
+      <Text my={4} mx={3} fontWeight={600}>
+        Active funds
+      </Text>
+      <Box
+        color="black"
+        py={3}
+        mx={8}
+        px={8}
+        borderRadius={"15px"}
+        h={170}
+        bgColor="white"
+        gap={6}
+        transition="transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out"
+        _hover={{
+          transform: "scale(1.05)",
+          boxShadow: "xl",
+        }}
+        cursor="pointer"
+      >
+        <Flex color="#5E5E5E" fontWeight={600} justify="space-between">
+          <Text>Music Funds</Text>
+          <Text>70%</Text>
+        </Flex>
+        <Flex color="#353535" mt={1}>
+          0.334 SOL
+        </Flex>
+
+        <Flex color="#1935C4" fontWeight={600} mt={3} justify="space-between">
+          <Text>$0</Text>
+          <Text>$10,000</Text>
+        </Flex>
+        <Progress color="#1935C4" value={70} />
+
+        <Link>
+          <Input
+            fontStyle={"italic"}
+            color="#7F7F7F"
+            isReadOnly
+            value={fullUrl}
+            w={"250px"}
+          />
+          <CopyToClipboard text={fullUrl}>
+            <AnimatedCopyIcon
+              style={{ color: "#7F7F7F" }}
+              boxSize={6}
+              variants={variants}
+              initial="normal"
+              animate={isClicked ? "clicked" : isHovered ? "hovered" : "normal"}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              onClick={() => setIsClicked(!isClicked)}
+            />
+          </CopyToClipboard>
+        </Link>
       </Box>
     </SideNav>
     /*     <Container
@@ -140,3 +222,62 @@ function Index() {
 }
 
 export default Index;
+
+interface OptionType {
+  title: string;
+  description: string;
+}
+
+const OptionCard: React.FC<OptionType> = ({ title, description }) => {
+  return (
+    <Box
+      w={"346px"}
+      h={"208px"}
+      borderRadius={"15px"}
+      overflow="hidden"
+      transition="transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out"
+      _hover={{
+        transform: "scale(1.05)",
+        boxShadow: "xl",
+      }}
+      position={"relative"}
+    >
+      <Image
+        src="crowd-funding.png"
+        alt="Placeholder Image"
+        w={"346px"}
+        h={"208px"}
+      />
+      {/* <Text mt="2" color="white" position="absolute">
+        crowdfunding
+      </Text> */}
+
+      <Box
+        position="absolute"
+        top="0"
+        left="0"
+        width="100%"
+        height="100%"
+        bg="rgba(0, 0, 0, 0.5)"
+        color="white"
+        opacity="0"
+        transition="opacity 0.2s ease-in-out"
+        _hover={{ opacity: 1 }}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        textAlign="center"
+        px="4"
+        cursor={"pointer"}
+      >
+        <VStack>
+          <Text fontWeight="bold" fontSize="xl" opacity={1}>
+            {title}
+          </Text>
+          <Text>{description}</Text>
+        </VStack>
+      </Box>
+    </Box>
+    // </Box>
+  );
+};
