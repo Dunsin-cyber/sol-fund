@@ -95,8 +95,8 @@ function Details() {
                 cursor="pointer"
               >
                 <Flex color="#5E5E5E" fontWeight={600} justify="space-between">
-                  <Text>Music Funds</Text>
-                  <Text>70%</Text>
+                  <Text>{recipient.name}</Text>
+                  <Text>{Math.floor(progress)}%</Text>
                 </Flex>
                 <Flex color="#353535" mt={1}>
                   0.334 SOL
@@ -108,10 +108,10 @@ function Details() {
                   mt={3}
                   justify="space-between"
                 >
-                  <Text>$0</Text>
-                  <Text>$10,000</Text>
+                  <Text>${recipient?.amountDonated}</Text>
+                  <Text>${recipient?.amountRequired}</Text>
                 </Flex>
-                <Progress color="#1935C4" value={70} />
+                <Progress color="#1935C4" value={Math.floor(progress)} />
               </Box>
 
               {/* extra funding details */}

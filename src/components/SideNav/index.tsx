@@ -1,4 +1,5 @@
 import React, { ReactElement } from "react";
+import { useNavigate } from "react-router-dom";
 import { Box, Flex, Text, Hide, Image } from "@chakra-ui/react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { TbWorld } from "react-icons/tb";
@@ -6,8 +7,12 @@ import { GoPeople } from "react-icons/go";
 import { BsRepeat } from "react-icons/bs";
 import { FiHome } from "react-icons/fi";
 import { Avatar } from "@chakra-ui/react";
+import { useAppSelector } from "../../redux/hook";
+import { TransactionT } from "../../redux/types";
 
-function index({ children }: any) {
+function Index({ children }: any) {
+  const navigate = useNavigate();
+  const transaction = useAppSelector((state) => state.transction);
   return (
     <Flex h="100vh" bgColor="#C5AFEA">
       {/* left */}
@@ -37,11 +42,23 @@ function index({ children }: any) {
           />
           <Flex
             fontWeight={600}
+            py={3}
+            px={3}
             color="black"
             justify="center"
             align="center"
             gap={1}
             cursor="pointer"
+            onClick={() => {
+              navigate("/profile");
+            }}
+            borderRadius="md"
+            transition="background-color 0.2s ease, transform 0.2s ease"
+            _hover={{
+              bg: "purple.600",
+              transform: "scale(1.05)",
+            }}
+            _focus={{ boxShadow: "outline" }}
           >
             <FiHome />
             <Text>Dashboard</Text>
@@ -53,6 +70,18 @@ function index({ children }: any) {
             align="center"
             gap={1}
             cursor="pointer"
+            onClick={() => {
+              navigate("/campaign");
+            }}
+            borderRadius="md"
+            py={3}
+            px={3}
+            transition="background-color 0.2s ease, transform 0.2s ease"
+            _hover={{
+              bg: "purple.600",
+              transform: "scale(1.05)",
+            }}
+            _focus={{ boxShadow: "outline" }}
           >
             <GoPeople color="black" />
             <Text>CrowdFund</Text>
@@ -64,6 +93,18 @@ function index({ children }: any) {
             align="center"
             gap={1}
             cursor="pointer"
+            onClick={() => {
+              navigate("/campaign");
+            }}
+            borderRadius="md"
+            py={3}
+            px={3}
+            transition="background-color 0.2s ease, transform 0.2s ease"
+            _hover={{
+              bg: "purple.600",
+              transform: "scale(1.05)",
+            }}
+            _focus={{ boxShadow: "outline" }}
           >
             <TbWorld />
             <Text>Campaign</Text>
@@ -75,6 +116,15 @@ function index({ children }: any) {
             align="center"
             gap={1}
             cursor="pointer"
+            borderRadius="md"
+            py={3}
+            px={3}
+            transition="background-color 0.2s ease, transform 0.2s ease"
+            _hover={{
+              bg: "purple.600",
+              transform: "scale(1.05)",
+            }}
+            _focus={{ boxShadow: "outline" }}
           >
             <BsRepeat color="black" />
             <Text>Swap</Text>
@@ -126,14 +176,11 @@ function index({ children }: any) {
               flexDirection="column"
               gap={3}
             >
-              <ActivityCard />
-              <ActivityCard />
-              <ActivityCard />
-              <ActivityCard />
-              <ActivityCard />
-              <ActivityCard />
-              <ActivityCard />
-              <ActivityCard />
+              {transaction?.map((val: TransactionT, index: number) => (
+                <Box key={index}>
+                  <ActivityCard signature={val.signature} status={val.status} />
+                </Box>
+              ))}
             </Flex>
           </Box>
         </Box>
@@ -142,9 +189,14 @@ function index({ children }: any) {
   );
 }
 
-export default index;
+export default Index;
 
-function ActivityCard() {
+interface ActivityType {
+  signature: string;
+  status: string;
+}
+
+const ActivityCard: React.FC<ActivityType> = ({ signature, status }) => {
   return (
     <Flex
       maxW="250px"
@@ -155,11 +207,11 @@ function ActivityCard() {
       px={3}
       gap={2}
     >
-      <Avatar />
+      <Avatar size={"sm"} />
       <Box fontSize="10px" color="black">
-        <Text>Daaps crypto</Text>
-        <Text>Funded crypto to your pool</Text>
+        <Text>{status}</Text>
+        <Text>{signature.slice(0, 20)}...</Text>
       </Box>
     </Flex>
   );
-}
+};

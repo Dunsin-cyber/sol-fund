@@ -1,5 +1,6 @@
 import React, { ReactElement } from "react";
 import { Box, Flex, Text, Hide, Image } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { TbWorld } from "react-icons/tb";
 import { GoPeople } from "react-icons/go";
@@ -7,7 +8,8 @@ import { BsRepeat } from "react-icons/bs";
 import { FiHome } from "react-icons/fi";
 import { Avatar } from "@chakra-ui/react";
 
-function index({ children }: any) {
+function Index({ children }: any) {
+  const navigate = useNavigate();
   return (
     <Flex h="100vh" bgColor="#C5AFEA">
       {/* left */}
@@ -42,6 +44,18 @@ function index({ children }: any) {
             align="center"
             gap={1}
             cursor="pointer"
+            borderRadius="md"
+            py={3}
+            px={3}
+            transition="background-color 0.2s ease, transform 0.2s ease"
+            _hover={{
+              bg: "purple.600",
+              transform: "scale(1.05)",
+            }}
+            _focus={{ boxShadow: "outline" }}
+            onClick={() => {
+              navigate("/profile");
+            }}
           >
             <FiHome />
             <Text>Dashboard</Text>
@@ -53,6 +67,18 @@ function index({ children }: any) {
             align="center"
             gap={1}
             cursor="pointer"
+            borderRadius="md"
+            py={3}
+            px={3}
+            transition="background-color 0.2s ease, transform 0.2s ease"
+            _hover={{
+              bg: "purple.600",
+              transform: "scale(1.05)",
+            }}
+            _focus={{ boxShadow: "outline" }}
+            onClick={() => {
+              navigate("/campaign");
+            }}
           >
             <GoPeople color="black" />
             <Text>CrowdFund</Text>
@@ -64,6 +90,18 @@ function index({ children }: any) {
             align="center"
             gap={1}
             cursor="pointer"
+            borderRadius="md"
+            py={3}
+            px={3}
+            transition="background-color 0.2s ease, transform 0.2s ease"
+            _hover={{
+              bg: "purple.600",
+              transform: "scale(1.05)",
+            }}
+            _focus={{ boxShadow: "outline" }}
+            onClick={() => {
+              navigate("/campaign");
+            }}
           >
             <TbWorld />
             <Text>Campaign</Text>
@@ -75,6 +113,15 @@ function index({ children }: any) {
             align="center"
             gap={1}
             cursor="pointer"
+            borderRadius="md"
+            py={3}
+            px={3}
+            transition="background-color 0.2s ease, transform 0.2s ease"
+            _hover={{
+              bg: "purple.600",
+              transform: "scale(1.05)",
+            }}
+            _focus={{ boxShadow: "outline" }}
           >
             <BsRepeat color="black" />
             <Text>Swap</Text>
@@ -95,4 +142,4 @@ function index({ children }: any) {
   );
 }
 
-export default index;
+export default Index;
