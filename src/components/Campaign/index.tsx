@@ -17,6 +17,8 @@ import Navbar from "../Navbar";
 import { CampaignT } from "../../redux/types";
 import { useAppSelector } from "../../redux/hook";
 
+import HalfSide from "../SideNav/HalfSide";
+
 function Campaign() {
   const { getAllCampaigns } = React.useContext(AppContext);
   React.useEffect(() => {
@@ -25,42 +27,82 @@ function Campaign() {
 
   const campaigns = useAppSelector((state) => state.campaign);
   return (
-    <Container
-      maxW={{ base: "90%", md: "60%" }}
-      mt={10}
-      border={"1px solid white"}
-      py={10}
-      px={10}
-    >
-      <Navbar />
-      <Box my={5}>
-        <Heading>Campaigns</Heading>
-        <Text py={4} fontSize={"24px"}>
-          This is the market place of different soalers who need funds, click on
-          any to fund
-        </Text>
-      </Box>
-      <Grid
-        templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(3, 1fr)" }}
+    <HalfSide>
+      <Flex
         gap={6}
+        mt={3}
+        h="100vh"
+        overflowY={"scroll"}
+        css={{
+          "&::-webkit-scrollbar": {
+            display: "none", // Hide scrollbar for Chrome, Safari, and Opera
+          },
+          scrollbarWidth: "none", // Hide scrollbar for Firefox
+          msOverflowStyle: "none", // Hide scrollbar for Internet Explorer and Edge
+        }}
+        flexDirection={"column"}
       >
-        {campaigns?.map((camp: CampaignT) => (
-          <Link
-            style={{ textDecoration: "none" }}
-            key={camp.pubKey}
-            to={`/details/${camp.pubKey}`}
-          >
-            <Card
-              id={camp.pubKey}
-              amountDonated={camp.amountDonated}
-              amountRequired={camp.amountRequired}
-              name={camp.name}
-              description={camp.description}
-            />
-          </Link>
-        ))}
-      </Grid>
-    </Container>
+        <Flex justify="Center" align="center">
+          <Text fontWeight={600}>Campaign</Text>
+        </Flex>
+        <Grid
+          templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(3, 1fr)" }}
+          gap={6}
+        >
+          {campaigns?.map((camp: CampaignT) => (
+            <Link
+              style={{ textDecoration: "none" }}
+              key={camp.pubKey}
+              to={`/details/${camp.pubKey}`}
+            >
+              <Card
+                id={camp.pubKey}
+                amountDonated={camp.amountDonated}
+                amountRequired={camp.amountRequired}
+                name={camp.name}
+                description={camp.description}
+              />
+            </Link>
+          ))}
+        </Grid>
+      </Flex>
+    </HalfSide>
+    // <Container
+    //   maxW={{ base: "90%", md: "60%" }}
+    //   mt={10}
+    //   border={"1px solid white"}
+    //   py={10}
+    //   px={10}
+    // >
+    //   <Navbar />
+    //   <Box my={5}>
+    //     <Heading>Campaigns</Heading>
+    //     <Text py={4} fontSize={"24px"}>
+    //       This is the market place of different soalers who need funds, click on
+    //       any to fund
+    //     </Text>
+    //   </Box>
+    //   <Grid
+    //     templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(3, 1fr)" }}
+    //     gap={6}
+    //   >
+    //     {campaigns?.map((camp: CampaignT) => (
+    //       <Link
+    //         style={{ textDecoration: "none" }}
+    //         key={camp.pubKey}
+    //         to={`/details/${camp.pubKey}`}
+    //       >
+    //         <Card
+    //           id={camp.pubKey}
+    //           amountDonated={camp.amountDonated}
+    //           amountRequired={camp.amountRequired}
+    //           name={camp.name}
+    //           description={camp.description}
+    //         />
+    //       </Link>
+    //     ))}
+    //   </Grid>
+    // </Container>
   );
 }
 
@@ -96,8 +138,9 @@ function Card({ id, name, description, amountDonated, amountRequired }: CardT) {
     <Center>
       <Box
         p="5"
-        maxW="320px"
-        borderWidth="1px"
+        maxW="301px"
+        border="none"
+        // bgColor=
         cursor="pointer"
         transform="auto"
         // onClick={onClick}
@@ -107,26 +150,28 @@ function Card({ id, name, description, amountDonated, amountRequired }: CardT) {
           transition: "transform 0.3s ease",
         }}
       >
-        <Image borderRadius="md" src={`/dummyPic/${pics[random]}`} />
+        <Image
+          w="271px"
+          h="159px"
+          borderRadius="md"
+          src={`/dummyPic/${pics[random]}`}
+        />
         <Flex align="baseline" mt={2}>
-          <Badge colorScheme="pink">New</Badge>
-          <Text
-            ml={2}
-            textTransform="uppercase"
-            fontSize="sm"
-            fontWeight="bold"
-          >
+          <Text ml={2} fontSize="sm">
             {name}
           </Text>
         </Flex>
-        <Text mt={2} fontSize="xl" fontWeight="semibold" lineHeight="short">
+        <Text mt={2} fontSize="sm" lineHeight="short">
           {description}
         </Text>
         {/* <Text mt={2}>${amountRequired}</Text> */}
         <Progress value={progress} />
-        <Flex mt={2} align="center">
+        <Flex mt={2} justify="space-between" align="center">
           <Text ml={1} fontSize="sm">
-            <b>{amountRequired}</b>({amountDonated})
+            <b>${amountDonated}</b>
+          </Text>
+          <Text ml={1} fontSize="sm">
+            <b>${amountRequired}</b>
           </Text>
         </Flex>
       </Box>

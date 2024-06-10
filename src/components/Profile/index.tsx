@@ -22,7 +22,9 @@ import {
   Button,
   Image,
   VStack,
+  Show,
   Progress,
+  Hide,
 } from "@chakra-ui/react";
 import { AppContext } from "../../Context";
 import { useLocation } from "react-router-dom";
@@ -30,7 +32,6 @@ import Navbar from "../Navbar";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { CopyIcon } from "@chakra-ui/icons";
-
 import { motion } from "framer-motion";
 import { Transactions } from "../Campaign/Details";
 import SideNav from "../SideNav";
@@ -69,18 +70,26 @@ function Index() {
           msOverflowStyle: "none", // Hide scrollbar for Internet Explorer and Edge
         }}
       >
-        <OptionCard
-          title={"Lending"}
-          description="This feature is coming soon"
-        />
-        <OptionCard
-          title={"Crowdfunding"}
-          description="easily raise funds under 10 seconds"
-        />
-        <OptionCard
-          title={"Borrowing"}
-          description="This feature is coming soon"
-        />
+        <Hide below="md">
+          <OptionCard
+            title={"Lending"}
+            description="This feature is coming soon"
+          />
+          <OptionCard
+            title={"Crowdfunding"}
+            description="easily raise funds under 10 seconds"
+          />
+          <OptionCard
+            title={"Borrowing"}
+            description="This feature is coming soon"
+          />
+        </Hide>
+        <Show below="md">
+          <OptionCard_
+            title={"Crowdfunding"}
+            description="easily raise funds under 10 seconds"
+          />
+        </Show>
       </Flex>
 
       <Text my={4} mx={3} fontWeight={600}>
@@ -103,18 +112,18 @@ function Index() {
         cursor="pointer"
       >
         <Flex color="#5E5E5E" fontWeight={600} justify="space-between">
-          <Text>Music Funds</Text>
-          <Text>70%</Text>
+          <Text>{user?.name}</Text>
+          <Text>{Math.floor(percentDonated)}%</Text>
         </Flex>
         <Flex color="#353535" mt={1}>
           0.334 SOL
         </Flex>
 
         <Flex color="#1935C4" fontWeight={600} mt={3} justify="space-between">
-          <Text>$0</Text>
-          <Text>$10,000</Text>
+          <Text>${user?.amountDonated}</Text>
+          <Text>${user?.amountRequired}</Text>
         </Flex>
-        <Progress color="#1935C4" value={70} />
+        <Progress color="#1935C4" value={Math.floor(percentDonated)} />
 
         <Link>
           <Input
@@ -231,8 +240,61 @@ interface OptionType {
 const OptionCard: React.FC<OptionType> = ({ title, description }) => {
   return (
     <Box
-      w={"346px"}
-      h={"208px"}
+      maxW={"346px"}
+      maxH={"208px"}
+      borderRadius={"15px"}
+      overflow="hidden"
+      transition="transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out"
+      _hover={{
+        transform: "scale(1.05)",
+        boxShadow: "xl",
+      }}
+      position={"relative"}
+    >
+      <Image
+        src="crowd-funding.png"
+        alt="Placeholder Image"
+        w={"346px"}
+        h={"208px"}
+      />
+      {/* <Text mt="2" color="white" position="absolute">
+        crowdfunding
+      </Text> */}
+
+      <Box
+        position="absolute"
+        top="0"
+        left="0"
+        width="100%"
+        height="100%"
+        bg="rgba(0, 0, 0, 0.5)"
+        color="white"
+        opacity="0"
+        transition="opacity 0.2s ease-in-out"
+        _hover={{ opacity: 1 }}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        textAlign="center"
+        px="4"
+        cursor={"pointer"}
+      >
+        <VStack>
+          <Text fontWeight="bold" fontSize="xl" opacity={1}>
+            {title}
+          </Text>
+          <Text>{description}</Text>
+        </VStack>
+      </Box>
+    </Box>
+    // </Box>
+  );
+};
+const OptionCard_: React.FC<OptionType> = ({ title, description }) => {
+  return (
+    <Box
+      maxW={"346px"}
+      maxH={"155px"}
       borderRadius={"15px"}
       overflow="hidden"
       transition="transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out"

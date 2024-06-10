@@ -85,7 +85,7 @@ function index({ children }: any) {
       <Box
         bgColor={"#181425"}
         bgGradient="linear(to-br, #0A0315, #2C014D)"
-        borderRadius={"15px"}
+        borderRadius={{ base: "0px", md: "15px" }}
         w={{ base: "100%", md: "60%" }}
       >
         {children}

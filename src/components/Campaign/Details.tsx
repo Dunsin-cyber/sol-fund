@@ -65,84 +65,123 @@ function Details() {
 
   return (
     <SideNav>
-      <Flex flexDirection={"column"} my={8} gap={6}>
-        <Flex justify="space-evenly">
-          <IoIosArrowBack />
-          <Text>SolFunding Finisher</Text>
-          <Box />
+      {!publicKey ? (
+        <Flex align="center" justify="center" flexDirection="column">
+          <Text fontSize={"24px"}>
+            Please connect a wallet to see full details and donate
+          </Text>
+          {/* <WalletMultiButton /> */}
         </Flex>
+      ) : (
+        <Flex flexDirection={"column"} my={8} gap={6}>
+          {recipient.name.length > 2 ? (
+            <>
+              <Flex justify="space-evenly">
+                <IoIosArrowBack />
+                <Text>SolFunding for {recipient.name}</Text>
+                <Box />
+              </Flex>
 
-        {/* funding details */}
-        <Box
-          color="black"
-          py={3}
-          mx={8}
-          px={8}
-          borderRadius={"15px"}
-          h={170}
-          bgColor="white"
-          gap={6}
-          cursor="pointer"
-        >
-          <Flex color="#5E5E5E" fontWeight={600} justify="space-between">
-            <Text>Music Funds</Text>
-            <Text>70%</Text>
-          </Flex>
-          <Flex color="#353535" mt={1}>
-            0.334 SOL
-          </Flex>
+              {/* funding details */}
+              <Box
+                color="black"
+                py={3}
+                mx={8}
+                px={8}
+                borderRadius={"15px"}
+                h={170}
+                bgColor="white"
+                gap={6}
+                cursor="pointer"
+              >
+                <Flex color="#5E5E5E" fontWeight={600} justify="space-between">
+                  <Text>Music Funds</Text>
+                  <Text>70%</Text>
+                </Flex>
+                <Flex color="#353535" mt={1}>
+                  0.334 SOL
+                </Flex>
 
-          <Flex color="#1935C4" fontWeight={600} mt={3} justify="space-between">
-            <Text>$0</Text>
-            <Text>$10,000</Text>
-          </Flex>
-          <Progress color="#1935C4" value={70} />
-        </Box>
+                <Flex
+                  color="#1935C4"
+                  fontWeight={600}
+                  mt={3}
+                  justify="space-between"
+                >
+                  <Text>$0</Text>
+                  <Text>$10,000</Text>
+                </Flex>
+                <Progress color="#1935C4" value={70} />
+              </Box>
 
-        {/* extra funding details */}
+              {/* extra funding details */}
+              <NumberInput
+                mx={8}
+                value={format(amount)}
+                onChange={(value: string) => setAmount(parse(value))}
+                defaultValue={0}
+                clampValueOnBlur={false}
+                h={"40px"}
+              >
+                <NumberInputField />
+              </NumberInput>
 
-        <Box
-          color="black"
-          py={1}
-          mx={8}
-          px={8}
-          borderRadius={"15px"}
-          h={49}
-          bgColor="white"
-        >
-          {" "}
-          <Flex color="#1935C4" fontWeight={600} mt={3} justify="space-between">
-            <Text>$10,000</Text>
-            <Text>30 SOL</Text>
-          </Flex>
-        </Box>
-        <Button
-          mx={8}
-          py={4}
-          bgColor="#4C3FE7"
-          color="white"
-          border="none"
-          // borderWidth={0}
-        >
-          Send Sol to Finisher
-        </Button>
-        {/* Message */}
-        <Flex
-          justify="flex-end"
-          mx={3}
-          gap={3}
-          cursor={"pointer"}
-          onClick={() => navigate("/message")}
-        >
-          <Text>Send a Message</Text>
-          <ChatIcon boxSize={6} />
+              {/* <Box
+                color="black"
+                py={1}
+                mx={8}
+                px={8}
+                borderRadius={"15px"}
+                h={49}
+                bgColor="white"
+              >
+                {" "}
+                <Flex
+                  color="#1935C4"
+                  fontWeight={600}
+                  mt={3}
+                  justify="space-between"
+                >
+                  <Text>$10,000</Text>
+                  <Text>30 SOL</Text>
+                </Flex>
+              </Box> */}
+              <Button
+                mx={8}
+                py={4}
+                bgColor="#4C3FE7"
+                color="white"
+                border="none"
+                onClick={handleDonate}
+                isDisabled={amount < 0.1 || transactionPending}
+                isLoading={transactionPending}
+              >
+                Send {recipient.name} some Sol
+              </Button>
+              {/* Message */}
+              <Flex
+                justify="flex-end"
+                mx={3}
+                gap={3}
+                cursor={"pointer"}
+                onClick={() => navigate("/message")}
+              >
+                <Text>Send a Message</Text>
+                <ChatIcon boxSize={6} />
+              </Flex>
+
+              <Text mx={8}>Transaction History</Text>
+              <Box>
+                <Transactions />
+              </Box>
+            </>
+          ) : (
+            <Heading textAlign={"center"}>
+              Opps!... You can't solFund yourself
+            </Heading>
+          )}
         </Flex>
-
-        <Text mx={8}>Transaction History</Text>
-        <Box>
-          <Transactions />
-        </Box>
-      </Flex>
+      )}
     </SideNav>
   );
   // return (
